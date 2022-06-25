@@ -1,0 +1,751 @@
+/* 1. Esquema relacional de una COOPERATIVA de productores de vino:
+•	VINOS ( Num, Nombre, Año, Grados)
+•	PRODUCTORES ( Num, Apellido, Nombre, Región)
+•	COSECHAS ( Nprod, Nvin, Cantidad)
+La clave primaria de la relación vinos es el atributo Num.
+El conjunto de productores  está representado por  la relación PRODUCTORES. 
+Un productor es descrito en la base de datos por un número entero, su apellido, su nombre y la región que habita. 
+La clave  de la relación es el atributo  Num.
+Un productor puede producir cero o varios vinos. Recíprocamente, un vino es producido por cero o varios productores.
+El conjunto de cosechas producidas está representado por la relación COSECHAS. 
+Una tupla de COSECHAS representa una producción particular de un vino (Nvin), realizada por un productor (Nprod) 
+y especifica la cantidad de botellas producidas en esa cosecha.  
+La clave de la relación COSECHAS es el grupo  de atributos (Nvin, Nprod).
+
+2. Las reglas de integridad
+Las reglas de integridad definidas para esta base de datos son:
+2.1. Las claves primarias de cada relación:
+•	El atributo Num para la relación VINOS.
+•	El atributo Num para la relación PRODUCTORES.
+•	El par de atributos (Nprod, Nvin) para la relación COSECHAS.
+2.2. Las claves foráneas:
+•	Nprod en la relación COSECHAS es una clave foránea del atributo Num en la relación PRODUCTORES, 
+lo que significa que los valores que tome el atributo Nprod son un subconjunto de los valores existentes
+ en el atributo Num de la relación PRODUCTORES.
+•	Nvin en la relación COSECHAS es una clave foránea del atributo Num en la relación VINOS, 
+lo que significa que los valores que tome el atributo Nvin son un subconjunto de los valores existentes 
+en el atributo Num de la relación VINOS. */
+
+
+PROMPT Borrando y Creando tablas: COSECHAS, PRODUCTORES y VINOS
+--************************************************--
+DROP TABLE COSECHAS cascade constraint;
+DROP TABLE PRODUCTORES cascade constraint;
+DROP TABLE  VINOS cascade constraint;
+PROMPT Borrando la vista VINOSPRODUCTOR
+DROP VIEW VINOSPRODUCTOR;
+--************************************************--
+CREATE TABLE VINOS (       --El conjunto de vinos está representado por la relación VINOS.
+num NUMBER(8) PRIMARY KEY, --Un vino  es  descrito por un número entero (su clave primaria)   
+nombre VARCHAR2(30),       --un nombre,
+grados NUMBER(4,2),        --cuántos grados de alcohol posee
+ano NUMBER(4));            --y el año de producción.
+
+CREATE TABLE PRODUCTORES (                --El conjunto de productores  está representado por la relación PRODUCTORES.
+num NUMBER(8) PRIMARY KEY,                --Un productor es descrito en la base de datos por un número entero (su clave primaria), 
+apellido VARCHAR2(25),                    --su apellido, 
+nombre VARCHAR2(20),                      --su nombre 
+region VARCHAR2(20));                     --y la región que habita. 
+
+--Un productor puede producir cero o varios vinos. Recíprocamente, un vino es producido por cero o varios productores.
+
+CREATE TABLE COSECHAS (                   --El conjunto de cosechas producidas está representado por la relación COSECHAS. 
+nvin NUMBER(8) REFERENCES VINOS,          --Una tupla de COSECHAS representa una producción particular de un vino (Nvin),
+nprod NUMBER(8) REFERENCES PRODUCTORES,   --realizada por un productor (Nprod)
+cantidad NUMBER(7),                       --y especifica la cantidad de botellas producidas en esa cosecha.
+PRIMARY KEY(nprod,nvin));                 --La clave de la relación COSECHAS es el grupo  de atributos (Nvin, Nprod).
+
+/* Las claves foráneas:
+•	Nprod en la relación COSECHAS es una clave foránea del atributo Num en la relación PRODUCTORES, 
+lo que significa que los valores que tome el atributo Nprod son un subconjunto de los valores existentes
+ en el atributo Num de la relación PRODUCTORES.
+•	Nvin en la relación COSECHAS es una clave foránea del atributo Num en la relación VINOS, 
+lo que significa que los valores que tome el atributo Nvin son un subconjunto de los valores existentes 
+en el atributo Num de la relación VINOS. */
+
+--************************************************--
+
+PROMPT insertando datos para VINOS
+
+INSERT INTO VINOS VALUES( 82, 'Cornas', 11, 1980 );
+INSERT INTO VINOS VALUES( 29, 'Corton', 11.6, 1972 );
+INSERT INTO VINOS VALUES( 15, 'Cote de Brouilly', 11.9, 1973 );
+INSERT INTO VINOS VALUES( 48, 'Cote de Brouilly', 12 , 1899);
+INSERT INTO VINOS VALUES( 20, 'Cote de Brouilly', 12.1, 1980 );
+INSERT INTO VINOS VALUES( 92, 'Coteaux de Pierevert', 10.3, 1967);
+INSERT INTO VINOS VALUES( 63, 'Coteaux du Tricastin', 10, 1978 );
+INSERT INTO VINOS VALUES( 64, 'Coteaux du Tricastin', 11, 1974);
+INSERT INTO VINOS VALUES( 8, 'Cotes de Beaune Villages',12.3, 1975);
+INSERT INTO VINOS VALUES( 21, 'Cotes de Nuits',12,1978);
+INSERT INTO VINOS VALUES( 24, 'Cotes de Beaune Villages', 12.1, 1971);
+INSERT INTO VINOS VALUES( 87, 'Cotes de Provence', 12, 1980);
+INSERT INTO VINOS VALUES( 88, 'Cotes de Provence', 10, 1976); 
+INSERT INTO VINOS VALUES( 94, 'Cotes du Roussillon', 11.5, 1978); 
+INSERT INTO VINOS VALUES( 13, 'Cotes du Rhone', 12.3, 1968);
+INSERT INTO VINOS VALUES( 55, 'Beaujolais Villages', 12.1, 1978); 
+INSERT INTO VINOS VALUES( 74, 'Arbois',12, 1980);
+INSERT INTO VINOS VALUES( 75, 'Arbois',11, 1976);
+INSERT INTO VINOS VALUES( 35, 'Auxey Duresses', 11.3, 1914);
+INSERT INTO VINOS VALUES( 42, 'Beaujolais Primeur', 12 , 1983);
+INSERT INTO VINOS VALUES( 10, 'Beaujolais Villages', 11.8 , 1979 );
+INSERT INTO VINOS VALUES( 54, 'Beaujolais Villages', 10.5, 1976);
+INSERT INTO VINOS VALUES( 53, 'Beaujolais Villages', 10.3, 1975);
+INSERT INTO VINOS VALUES( 73, 'Bellet' , 11, 1976 );
+INSERT INTO VINOS VALUES( 93, 'Blanquette de Limoux', 10.9, 1978);
+INSERT INTO VINOS VALUES( 30, 'Bourgogne Passe Tout Grains', 12, 1979);
+INSERT INTO VINOS VALUES( 52, 'Brouilly', 11.5, 1975);
+INSERT INTO VINOS VALUES( 72, 'Cassis', 10, 1978);
+INSERT INTO VINOS VALUES( 91, 'Cassis', 11, 1979);
+INSERT INTO VINOS VALUES( 18, 'Chambolle Musigny', 12.3, 1968);
+INSERT INTO VINOS VALUES( 9, 'Chapelle Chambertin', 11.9, 1973);
+INSERT INTO VINOS VALUES( 25, 'Chapelle Chambertin', 10.5, 1968);
+INSERT INTO VINOS VALUES( 14, 'Chateau Chalon', 10.09, 1978);
+INSERT INTO VINOS VALUES( 76, 'Chateau Chalon', 12 , 1976);
+INSERT INTO VINOS  VALUES( 26, 'Chateau Corton Grancey', 12 ,1980);
+INSERT INTO VINOS  VALUES( 50, 'Chenas', 12, 1984);
+INSERT INTO VINOS VALUES( 51, 'Chenas', 10, 1975);
+INSERT INTO VINOS VALUES( 45, 'Chiroubles', 10.9, 1983);
+INSERT INTO VINOS VALUES( 47, 'Chiroubles', 11, 1978 );
+INSERT INTO VINOS VALUES( 46,'Chiroubles', 11 ,1983 );
+INSERT INTO VINOS VALUES( 36, 'Chorey les Beaunes', 11, 1955 );
+INSERT INTO VINOS VALUES( 41, 'Clairette de Die', 12, 1976 );
+INSERT INTO VINOS VALUES( 19, 'Clos du roi', 11.2 , 1972 );
+INSERT INTO VINOS VALUES( 98, 'Corbieres', 10, 1978 );
+INSERT INTO VINOS VALUES( 81, 'Cornas', 11, 1980 );
+INSERT INTO VINOS VALUES( 11, 'Sylvaner', 11.2, 1982 );
+INSERT INTO VINOS VALUES( 70, 'Sylvaner', 11, 1982 );
+INSERT INTO VINOS VALUES( 66, 'Tavel',  11, 1968 );
+INSERT INTO VINOS VALUES( 85, 'Tavel', 11, 1980 );
+INSERT INTO VINOS VALUES( 95, 'Cotes du Roussillon', 12, 1978 );
+INSERT INTO VINOS VALUES( 57, 'Crozes Hermitage', 12.1, 1974 ); 
+INSERT INTO VINOS VALUES( 61, 'Crozes Hermitage', 12, 1979 );
+INSERT INTO VINOS VALUES( 58, 'Crozes Hermitage', 12.5, 1975 );
+INSERT INTO VINOS VALUES( 60, 'Crozes Hermitage', 11, 1983 );
+INSERT INTO VINOS VALUES( 89, 'Cotes de Provence' ,11, 1969 );
+INSERT INTO VINOS VALUES( 59, 'Crozes Hermitage', 12.3, 1972 );
+INSERT INTO VINOS VALUES( 77, 'Etoile', 11, 1979 );
+INSERT INTO VINOS VALUES( 78, 'Etoile', 12, 1980 );
+INSERT INTO VINOS VALUES( 43, 'Fleurie', 11.4, 1980 );
+INSERT INTO VINOS VALUES( 12, 'Gentil', 10.7, 1975 );
+INSERT INTO VINOS VALUES( 67, 'Gewurztraminer', 12.5, 1968 );
+INSERT INTO VINOS VALUES( 62, 'Gigondas', 11, 1978 );
+INSERT INTO VINOS VALUES( 7, 'Grands Echezeaux', 11.7, 1968 );
+INSERT INTO VINOS VALUES( 1, 'Mercurey', 11.5, 1980 ); 
+INSERT INTO VINOS VALUES( 2, 'Julienas', 11.3, 1974 );
+INSERT INTO VINOS VALUES( 4, 'Mercurey', 10.09, 1980 );
+INSERT INTO VINOS VALUES( 6, 'Mercurey', 11.2, 1981 );
+INSERT INTO VINOS VALUES( 16, 'Meursault', 12.1, 1980 );
+INSERT INTO VINOS VALUES( 17, 'Meursault', 11.4 , 1975 );
+INSERT INTO VINOS VALUES( 34, 'Montagny', 11.2, 1978 );
+INSERT INTO VINOS VALUES( 31, 'Monthelie', 11.4 , 1968 );
+INSERT INTO VINOS VALUES(  49, 'Morgon', 12, 1984 );
+INSERT INTO VINOS VALUES( 44, 'Moulin a vent', 11.2, 1983 );
+INSERT INTO VINOS VALUES( 71, 'Palette', 11, 1981 );
+INSERT INTO VINOS VALUES( 90, 'Palette', 11, 1969 );
+INSERT INTO VINOS VALUES( 5, 'Pommard', 11.7, 1976 );
+INSERT INTO VINOS VALUES( 23, 'Pommard', 12, 1972 );
+INSERT INTO VINOS VALUES( 32, 'Pouilly Vinzelles', 12.3, 1968 );
+INSERT INTO VINOS VALUES( 27, 'Puligny Montrachet', 11, 1974 );
+INSERT INTO VINOS VALUES( 84, 'Rasteau', 10, 1980);
+INSERT INTO VINOS VALUES( 40, 'Richebourg', 12, 1943);
+INSERT INTO VINOS VALUES( 68, 'Riesling', 11.4, 1962);
+INSERT INTO VINOS VALUES( 65,'Rochegrande', 10.8, 1968);
+INSERT INTO VINOS VALUES( 56, 'Saint Amour', 12.6, 1974);
+INSERT INTO VINOS VALUES( 83, 'Saint Amour', 10, 1980);
+INSERT INTO VINOS VALUES( 96, 'Saint Chinian', 11, 1976);
+INSERT INTO VINOS VALUES( 97, 'Saint Chinian', 11, 1976);
+INSERT INTO VINOS VALUES( 101, 'Saint Veran', 12.5, 1973);
+INSERT INTO VINOS VALUES( 33, 'Santenay', 12, 1972);
+INSERT INTO VINOS VALUES( 3, 'Savigny les Beaunes', 12.1, 1978);
+INSERT INTO VINOS VALUES( 38, 'Savigny les Beaunes', 11, 1977);
+INSERT INTO VINOS VALUES( 39, 'Savigny les Beaunes', 12, 1973);
+INSERT INTO VINOS VALUES( 37, 'Savigny les Beaunes', 10, 1978);
+INSERT INTO VINOS VALUES( 22, 'Savigny les Beaunes', 12, 1974);
+INSERT INTO VINOS VALUES( 79, 'Seyssel', 11, 1980);
+INSERT INTO VINOS VALUES( 100, 'Seyssel', 11, 1974);
+INSERT INTO VINOS VALUES( 80, 'Seyssel', 11, 1980);
+INSERT INTO VINOS VALUES( 86, 'Tavel', 11, 1980);
+INSERT INTO VINOS VALUES( 69, 'Tokay d"Alsace', 11, 1982);
+INSERT INTO VINOS VALUES( 99, 'Vin de Savoie Ayze', 12, 1976);
+INSERT INTO VINOS VALUES( 28, 'Volnay', 11, 1980);
+commit;
+
+--************************************************--
+
+PROMPT insertando datos para PRODUCTORES
+
+INSERT INTO PRODUCTORES   VALUES( 106, 'Alary',  NULL, 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES(  65, 'Appert', 'Michel', 'Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES(  108, 'Archimbaud', 'Jean', 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES(125, 'Baldes', 'Jean' , 'Sud Ouest' );
+INSERT INTO PRODUCTORES   VALUES( 16, 'Barbin', 'Bernard', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 129, 'Barrere', 'Alfred', 'Sud Ouest' );
+INSERT INTO PRODUCTORES   VALUES( 88, 'Begot', 'Albert', 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES(  98, 'Berard', NULL, 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES(100, 'Bernard', 'Georges', 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 1, 'Bohn', 'Rene', 'Alsace');
+INSERT INTO PRODUCTORES   VALUES( 96, 'Boisson','Jean Pierre','Rhone');
+INSERT INTO PRODUCTORES   VALUES(115, 'Bordonado', 'Raymond', 'Provence' );
+INSERT INTO PRODUCTORES   VALUES( 73, 'Bourguignon', 'Emile', 'Jura' );
+INSERT INTO PRODUCTORES   VALUES( 2, 'Boxler','Albert', 'Alsace' );
+INSERT INTO PRODUCTORES   VALUES( 127, 'Brumont', 'Alban', 'Sud Ouest');
+INSERT INTO PRODUCTORES  VALUES( 114, 'Brunet', 'Georges', 'Provence' );
+INSERT INTO PRODUCTORES  VALUES( 120, 'Campigna', 'Janvier', 'Pyrenees' );
+INSERT INTO PRODUCTORES  VALUES( 50, 'Chagny', 'Georges', 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 71, 'Chalandard', 'Danile', 'Jura' );
+INSERT INTO PRODUCTORES  VALUES( 62, 'Champagnon', 'Louis', 'Beaujolais' );
+INSERT INTO PRODUCTORES  VALUES( 85, 'Champet', 'Emile', 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 61, 'Champier', 'Charles', 'Beaujolais' );
+INSERT INTO PRODUCTORES VALUES( 91, 'Chave', 'Gerard', 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 11, 'Clerget', 'Anne', 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 63, 'Cooperative', NULL ,'Beaujolais' );
+INSERT INTO PRODUCTORES  VALUES( 117, 'Cooperative', NULL, 'Languedoc');
+INSERT INTO PRODUCTORES  VALUES( 118, 'Cooperative', NULL, 'Languedoc' );
+INSERT INTO PRODUCTORES  VALUES (66, 'Cooperative', NULL, 'Beaujolais');
+INSERT INTO PRODUCTORES  VALUES( 110,'Cooperative', NULL,'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 102, 'Cooperative',  NULL, 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 99, 'Cooperative', NULL, 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 121, 'Cooperative', NULL, 'Pyrenees' );
+INSERT INTO PRODUCTORES   VALUES( 119, 'Cooperative', NULL, 'Pyrenees' );
+INSERT INTO PRODUCTORES  VALUES( 54, 'Cooperative', NULL, 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 53, 'Cooperative', NULL, 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 21, 'Cornu', 'Edmond', 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 103, 'Coulouvrat', 'Michel', 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 56, 'Coutelle', 'Jean', 'Beaujolais' );
+INSERT INTO PRODUCTORES  VALUES( 124, 'Daurat', 'Fort Robert', 'Pyrenees' );
+INSERT INTO PRODUCTORES  VALUES( 92, 'De Boissieu', NULL, 'Rhone' );
+INSERT INTO PRODUCTORES VALUES( 38, 'De Launay', 'Paul', 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES(29, 'De Suremain', 'Robert', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES(  93, 'Marsanne', 'Jean', 'Rhone' );
+INSERT INTO PRODUCTORES  VALUES( 39, 'De Suremin', 'Hugues', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 37, 'Delagrange', 'Bachelet', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 30, 'Desbois', 'Maurice', 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 67, 'Descombes', 'Jean Ernest', 'Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 57, 'Desmules', 'Pierre', 'Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 80, 'Devaux', 'Jean Paul', 'Jura' );
+INSERT INTO PRODUCTORES  VALUES( 15, 'Drouhin', 'Joseph', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 22, 'Dubreuil', 'Fontaine Pierre', 'Bourgogne'  );
+INSERT INTO PRODUCTORES  VALUES( 86, 'Dumazet', 'Marc', 'Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 19, 'Dupaquier', 'Roger', 'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES (122,'Dupuy','Charles','Pyrenees' );
+INSERT INTO PRODUCTORES  VALUES( 17,'Faiveley','Guy','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 44,'Feyveley',NULL,'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 48,'Flamand',NULL,'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 10,'Fournier','Jean Claude','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 40,'Genelot','Maurice','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 27,'Glantenay','Louis','Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 113,'Gomez','Rene','Provence' );
+INSERT INTO PRODUCTORES   VALUES (83, 'Goy',NULL,'Jura' );
+INSERT INTO PRODUCTORES   VALUES (74,'Grand','Rene','Jura' );
+INSERT INTO PRODUCTORES  VALUES( 94,'Grippat','Jean Louis','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 13,'Grivot','Jean','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 24,'Guillemot','Pierre','Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 49,'Guillot','Pierre','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 116,'Imbert','Christian','Corse' );
+INSERT INTO PRODUCTORES   VALUES( 69 ,'Janin','Marcel','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 14,'Jayer','Henri','Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 45,'Jeannin','Andre','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 58,'Joubert','Claude','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 5,'Joudeat','Lucien','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 126,'Jouffreau','Jean','Sud Ouest' );
+INSERT INTO PRODUCTORES  VALUES( 41,'Juillot','Michel','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 42,'Juillot','Maurice','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 59,'La Thuilliere','Jean','Beaujolais');
+INSERT INTO PRODUCTORES   VALUES( 23,'Laleure', NULL, 'Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 20,'Lamy','Jean','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 52,'Lapierre','Jean','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 7,'Lasnier','Pierre','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 123,'Laurent','Pierre','Pyrenees' );
+INSERT INTO PRODUCTORES   VALUES( 8,'Lioger d"Harduy','Gabriel','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 75,'Loye','Camille','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 76,'Maire','Henri','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 64,'Marius Bel Air','Morin','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 43,'Menand','Jean Claude','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 32,'Mestre','Philippe','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 84,'Metral','Jean','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 107,'Meunier','Laurent','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 89,'Michelas','Robert','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 78,'Michel','Pierre Emile','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 55,'Michon','Philippe','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 82,'Mollex','Georges','Savoie' );
+INSERT INTO PRODUCTORES   VALUES( 46,'Monassier','Armand','Bourgogne');
+INSERT INTO PRODUCTORES   VALUES( 9,'Moniot','Gilbert','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 28,'Monnier' ,'Rene','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 34,'Monnier','Rene','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES(  87,'Neyret','Gachet','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 81,'Peltier','Pierre','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 79,'Petit','Gerard','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 112,'Prebost','Gaston','Provence' );
+INSERT INTO PRODUCTORES   VALUES( 33,'Prieur','Guy','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 31,'Prudhon','Henri','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 97,'Quiot','Pierre','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 104,'Rabasse Chavarin','Abel','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 72,'Reverchon','Joseph','Jura' );
+INSERT INTO PRODUCTORES   VALUES( 109,'Rey','Marcel','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 35,'Roulot','Guy ','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 90,'Roure','Raymond','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 105,'Roux','Charles','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 36,'Sauzet','Etienne','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 68,'Savoye','Louis','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 51,'Simonet','Leon','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 3, 'Six','Paul','Alsace ');
+INSERT INTO PRODUCTORES   VALUES( 4,'Stentz','Fernand','Alsace' );
+INSERT INTO PRODUCTORES   VALUES( 47,'Thenard',NULL,'Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 77,'Tissot','Andre','Jura'  );
+INSERT INTO PRODUCTORES   VALUES( 12,'Tortochot','Gabriel','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 18,'Tramier ','Jean','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 70,'Trichard','Benoit','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 25,'Valentin Bouchotte','Roger','Bourgogne' );
+INSERT INTO PRODUCTORES   VALUES( 101,'Verdan','Antoine','Rhone' );
+INSERT INTO PRODUCTORES   VALUES( 60,'Vernus','Georges','Beaujolais' );
+INSERT INTO PRODUCTORES   VALUES( 95,'Verset','Louis','Rhone'  );
+INSERT INTO PRODUCTORES   VALUES( 26,'Violot','Gilbert','Bourgogne' );
+INSERT INTO PRODUCTORES  VALUES( 111,'Zafiropulo','Costa','Provence');
+INSERT INTO PRODUCTORES   VALUES( 6,'Marmagne','Bernard','Bourgogne' );
+
+commit;
+--************************************************--
+
+PROMPT insertando datos para COSECHAS
+
+INSERT INTO COSECHAS VALUES( 1, 1, 300 );
+INSERT INTO COSECHAS VALUES( 1, 3, 400 );
+INSERT INTO COSECHAS VALUES( 1, 54, 500 );
+INSERT INTO COSECHAS VALUES( 2, 45,  90 );
+INSERT INTO COSECHAS VALUES( 2, 54, 900  );
+INSERT INTO COSECHAS VALUES( 2, 50, 100  );
+INSERT INTO COSECHAS VALUES( 2, 49, 150 );
+INSERT INTO COSECHAS VALUES( 4, 34, 500 );
+INSERT INTO COSECHAS VALUES( 4, 78, 300 );
+INSERT INTO COSECHAS VALUES( 5, 21, 150 );
+INSERT INTO COSECHAS VALUES( 5, 67, 125);
+INSERT INTO COSECHAS VALUES( 5, 11, 200 );
+INSERT INTO COSECHAS VALUES( 5, 2, 100 );
+INSERT INTO COSECHAS VALUES( 5, 99, 100 );
+INSERT INTO COSECHAS VALUES( 7, 12, 31 );
+INSERT INTO COSECHAS VALUES( 7, 19, 986 );
+INSERT INTO COSECHAS VALUES( 8, 9, 10 );
+INSERT INTO COSECHAS VALUES( 9, 69, 96 );
+INSERT INTO COSECHAS VALUES( 10, 35, 900 );
+INSERT INTO COSECHAS VALUES( 10, 67, 890 );
+INSERT INTO COSECHAS VALUES( 10, 4, 35 );
+INSERT INTO COSECHAS VALUES( 11, 92, 900  );
+INSERT INTO COSECHAS VALUES( 11, 94, 500 );
+INSERT INTO COSECHAS VALUES( 12, 65, 10 );
+INSERT INTO COSECHAS VALUES( 12, 68, 60 );
+INSERT INTO COSECHAS VALUES( 12, 69, 320 );
+INSERT INTO COSECHAS VALUES( 13, 13, 13 );
+INSERT INTO COSECHAS VALUES( 13, 43, 500  );
+INSERT INTO COSECHAS VALUES( 14, 54, 500 );
+INSERT INTO COSECHAS VALUES( 14, 55, 450 );
+INSERT INTO COSECHAS VALUES( 15, 89, 150 );
+INSERT INTO COSECHAS VALUES( 15, 51,36 );
+INSERT INTO COSECHAS VALUES( 22, 30, 350 );
+INSERT INTO COSECHAS VALUES( 23, 35, 350 );
+INSERT INTO COSECHAS VALUES( 24, 56, 790 );
+INSERT INTO COSECHAS VALUES( 24,98, 986 );
+INSERT INTO COSECHAS VALUES( 25, 100, 100 );
+INSERT INTO COSECHAS VALUES( 27, 78, 360 );
+INSERT INTO COSECHAS VALUES( 27, 94, 180 );
+INSERT INTO COSECHAS VALUES( 30, 78, 900 );
+INSERT INTO COSECHAS VALUES( 30, 5, 46 );
+INSERT INTO COSECHAS VALUES( 35, 98, 400 );
+INSERT INTO COSECHAS VALUES( 36, 24 , 859 );
+INSERT INTO COSECHAS VALUES( 38, 87, 630 );
+INSERT INTO COSECHAS VALUES( 38, 73, 45 );
+INSERT INTO COSECHAS VALUES( 38, 75, 69 );
+INSERT INTO COSECHAS VALUES( 38, 71, 132 );
+INSERT INTO COSECHAS VALUES( 38, 16, 100);  
+INSERT INTO COSECHAS VALUES( 38, 70, 120 );
+INSERT INTO COSECHAS VALUES( 40 ,52 ,500 );
+INSERT INTO COSECHAS VALUES( 40 ,53, 800  );
+INSERT INTO COSECHAS VALUES( 40, 57, 940 );
+INSERT INTO COSECHAS VALUES( 40, 18 ,120 );
+INSERT INTO COSECHAS VALUES( 42 ,89, 980 );
+INSERT INTO COSECHAS VALUES( 42, 6 ,300  );
+INSERT INTO COSECHAS VALUES( 43, 12 ,200  );
+INSERT INTO COSECHAS VALUES( 43 ,82, 100 );
+INSERT INTO COSECHAS VALUES( 43, 26,70 );
+INSERT INTO COSECHAS VALUES( 45,87,680  );
+INSERT INTO COSECHAS VALUES( 45, 59, 160 );
+INSERT INTO COSECHAS VALUES( 45, 58 ,70 );
+INSERT INTO COSECHAS VALUES( 46, 76, 100 );
+INSERT INTO COSECHAS VALUES( 50 ,31, 320 );
+INSERT INTO COSECHAS VALUES( 50 ,28, 100 );
+INSERT INTO COSECHAS VALUES( 50, 29, 50 );
+INSERT INTO COSECHAS VALUES( 50, 20, 100 );
+INSERT INTO COSECHAS VALUES( 50, 60 ,300 );
+INSERT INTO COSECHAS VALUES( 52, 47, 75 );
+INSERT INTO COSECHAS VALUES( 52, 72, 34 );
+INSERT INTO COSECHAS VALUES( 52 ,39, 80 );
+INSERT INTO COSECHAS VALUES(   52 ,38 ,125);
+INSERT INTO COSECHAS VALUES( 54, 37, 830  );
+INSERT INTO COSECHAS VALUES( 55, 89 ,723 );
+INSERT INTO COSECHAS VALUES( 55 ,85, 46 );
+INSERT INTO COSECHAS VALUES( 55, 88, 129 );
+INSERT INTO COSECHAS VALUES(   56 ,90, 900);
+INSERT INTO COSECHAS VALUES( 59 ,96 ,370 );
+INSERT INTO COSECHAS VALUES(   60, 60 ,60);
+INSERT INTO COSECHAS VALUES( 60 ,33 ,70 );
+INSERT INTO COSECHAS VALUES( 60 ,62 ,900 );
+INSERT INTO COSECHAS VALUES( 63, 54 ,210 );
+INSERT INTO COSECHAS VALUES( 64 ,46, 760 );
+INSERT INTO COSECHAS VALUES(   65, 89 ,980);
+INSERT INTO COSECHAS VALUES( 65, 66 ,124 );
+INSERT INTO COSECHAS VALUES( 65, 63 ,136 );
+INSERT INTO COSECHAS VALUES( 65, 40 ,90  );
+INSERT INTO COSECHAS VALUES( 67 ,45 ,912 );
+INSERT INTO COSECHAS VALUES( 68, 78, 980  );
+INSERT INTO COSECHAS VALUES( 69, 69, 690 );
+INSERT INTO COSECHAS VALUES( 70, 74 ,650 );
+INSERT INTO COSECHAS VALUES( 70 ,101, 213 );
+INSERT INTO COSECHAS VALUES( 70, 97, 101 );
+INSERT INTO COSECHAS VALUES( 71, 45 ,98  );
+INSERT INTO COSECHAS VALUES( 72, 32 ,890  );
+INSERT INTO COSECHAS VALUES( 72, 43 ,900 );
+INSERT INTO COSECHAS VALUES( 72 ,64 ,870 );
+commit;
+PROMPT ---------------LISTADO DE VINOS---------------------
+
+SELECT * FROM VINOS;
+PROMPT ---------------LISTADO DE PRODUCTORES---------------------
+
+SELECT * FROM PRODUCTORES;
+PROMPT ---------------LISTADO DE COSECHAS---------------------
+
+SELECT * FROM COSECHAS;
+PROMPT ---------------NÚMERO DE REGISTROS EN CADA TABLA----------
+SELECT COUNT(*) AS FILAS_EN_VINOS FROM VINOS; 
+SELECT COUNT(*) AS FILAS_EN_PRODUCTORES FROM PRODUCTORES; 
+SELECT COUNT(*) AS FILAS_EN_COSECHAS FROM COSECHAS; 
+
+/* ******************************************************************** 
+
+Nivel básico – Ejercicios propuestos
+
+Nº	Enunciado	   
+1	Buscar la lista de PRODUCTORES (nombre, apellido y región) ordenados por apellido.	   
+2	Hallar los PRODUCTORES localizados en la región de Beaujolais.	   
+3	¿Cuáles son los PRODUCTORES de la región de Beaujolais que han producido al menos una cosecha en cantidad  superior a 300 botellas?, para esto se requiere el nombre y  el apellido de los PRODUCTORES ordenados alfabéticamente.	   
+4	Encontrar el número de identificación de los VINOS que tienen un grado superior a 12 o que han sido producidos por el productor número 24.	   
+5	Indicar, en orden alfabético, el nombre y el apellido de los PRODUCTORES del vino número 12.	   
+6	Indicar el nombre y el apellido de los  PRODUCTORES que  han producido el vino  número 22 en una cantidad total superior a  50.	   
+7	Hallar el número, nombre y apellido de los PRODUCTORES que no han  producido VINOS.	   
+8	Hallar el nombre de los VINOS del año 1973 que no tienen COSECHAS registradas.	   
+9	Hallar el número del  vino y su nombre para aquellos VINOS producidos por al menos dos PRODUCTORES de dos regiones diferentes.	   
+	
+*************************************************************************** */
+
+PROMPT 1	Buscar la lista de PRODUCTORES (nombre, apellido y región) ordenados por apellido.
+PROMPT    SOLUCIÓN: Número de tuplas : 128
+
+ 
+	   SELECT Apellido, nombre, Region
+FROM PRODUCTORES
+ORDER BY apellido;
+
+
+	   
+PROMPT 2	Hallar los PRODUCTORES localizados en la región de Beaujolais.
+PROMPT SOLUCIÓN: Número de tuplas : 15
+/*
+*************************************************************************** 	
+Errores clásicos:
+a) ‘Beaujolais’  digitado todo en  minúscula  o todo en mayúscula.
+b) Utilización errada de la comilla doble para los caracteres.
+*************************************************************************** */ 
+   SELECT *
+FROM PRODUCTORES
+WHERE region =  'Beaujolais';
+
+	   
+PROMPT 3	¿Cuáles son los PRODUCTORES de la región de Beaujolais que han producido al menos una cosecha en cantidad  
+PROMPT superior a 300 botellas?, para esto se requiere el nombre y  el apellido de los PRODUCTORES ordenados alfabéticamente.	   
+PROMPT SOLUCIÓN: Número de tuplas: 6 (ó 7 sin uso de DISTINCT)
+
+ 	SELECT  distinct  p.apellido,  p.nombre
+ FROM PRODUCTORES p,  COSECHAS c
+ WHERE  p.region  =  'Beaujolais'  AND
+                  p.num  = c.nprod AND
+                  c.cantidad > 300
+ ORDER BY  p.apellido,p.nombre;
+
+PROMPT  Otra respuesta con resultado equivalente:
+
+SELECT DISTINCT apellido, nombre
+ FROM PRODUCTORES
+ WHERE region = 'Beaujolais' AND
+       num IN ( SELECT nprod
+                FROM COSECHAS
+                WHERE cantidad > 300 )
+ ORDER BY 1,2;	   
+ 
+PROMPT 4	Encontrar el número de identificación de los VINOS que tienen un grado superior a 12 
+PROMPT o que han sido producidos por el productor número 24.	   
+PROMPT SOLUCIÓN: Número de tuplas: 16
+ 
+ 	SELECT num
+FROM VINOS
+WHERE grados > 12
+UNION
+SELECT nvin
+FROM COSECHAS
+WHERE NPROD = 24;
+
+PROMPT Si deseamos diferenciar  los obtenidos por el primer criterio de los obtenidos  por el segundo, 
+PROMPT podemos adicionar una etiqueta utilizando para ello una cadena de caracteres.
+PROMPT SOLUCIÓN: Número de tuplas: 16 (un vino es obtenido por ambos criterios).
+SELECT num  , 'De grado superior a 12'  AS criterio
+FROM VINOS
+WHERE grados > 12
+UNION
+SELECT nvin   , 'Del productor 24'   AS criterio
+FROM COSECHAS
+WHERE nprod = 24;
+	   
+PROMPT 5	Indicar, en orden alfabético, el nombre y el apellido de los PRODUCTORES del vino número 12.	
+PROMPT SOLUCIÓN: Número  de tuplas: 3
+-- A)
+ 	SELECT DISTINCT P.apellido, P.nombre
+FROM PRODUCTORES p, COSECHAS c
+WHERE p.num = c.nprod  AND  c.nvin  = 12
+ORDER BY  p.apellido, p.nombre;
+
+PROMPT Otras respuestas:
+-- B)
+SELECT  DISTINCT apellido, nombre
+FROM PRODUCTORES
+WHERE  num  IN  (     SELECT nprod
+                                       FROM COSECHAS
+                                       WHERE  nvin = 12 )
+ORDER BY apellido, nombre;
+ 
+ -- C)
+ 
+SELECT DISTINCT p.apellido, p.nombre
+FROM PRODUCTORES p
+WHERE EXISTS        ( SELECT  c.*
+                                        FROM COSECHAS  c
+                                        WHERE c.nprod = p.num  AND
+                                                        c.nvin = 12 )
+ ORDER BY  apellido, nombre;	 
+ 
+PROMPT 6	Indicar el nombre y el apellido de los  PRODUCTORES que  han producido el vino  
+PROMPT número 22 en una cantidad total superior a  50.	   
+PROMPT SOLUCIÓN: Número de tuplas: 1
+  
+  SELECT   DISTINCT p.apellido, p.nombre
+FROM PRODUCTORES p, COSECHAS c
+ WHERE c.nvin = 22 AND
+ p.num = c.nprod  AND
+ c.cantidad  > 50;
+
+PROMPT Otra respuesta válida:
+
+SELECT   DISTINCT p.apellido, p.nombre
+From PRODUCTORES p
+ WHERE  num IN ( SELECT nprod
+                                 FROM COSECHAS
+                                 WHERE  cantidad > 50 AND nvin = 22 );	   
+
+PROMPT 7	Hallar el número, nombre y apellido de los PRODUCTORES que no han  producido VINOS.	
+PROMPT SOLUCIÓN: Número de tuplas: 53	
+
+ 	SELECT p.num, p.apellido, p.nombre
+FROM  PRODUCTORES  p
+WHERE p.num IN ( SELECT num
+FROM PRODUCTORES
+MINUS
+SELECT nprod
+FROM COSECHAS );
+   
+PROMPT 8	Hallar el nombre de los VINOS del año 1973 que no tienen COSECHAS registradas.	   
+PROMPT SOLUCIÓN: Número de tuplas: 2	
+
+SELECT nombre
+FROM VINOS
+WHERE ano = 1973
+MINUS
+SELECT nombre
+FROM VINOS v, COSECHAS c
+WHERE v.num = c.nvin AND v.ano = 1973;
+ 
+PROMPT 9	Hallar el número del  vino y su nombre para aquellos VINOS producidos por al menos 
+PROMPT dos PRODUCTORES de dos regiones diferentes.	 
+PROMPT SOLUCIÓN: Número de tuplas: 19 tuplas.
+
+SELECT DISTINCT v.num, v.nombre
+FROM VINOS v, PRODUCTORES p1, PRODUCTORES p2, COSECHAS c1, COSECHAS c2
+WHERE v.num= c1.nvin AND 
+                   v.num = c2.nvin AND
+                   p1.num = c1.nprod AND
+                   p2.num = c2.nprod AND
+                   p1.region <>p2.region;
+	   
+/*****************************************************************
+ Nivel avanzado – Ejercicios propuestos
+
+1	Para el vino número 12, hallar la cantidad total de botellas producidas.	   
+2	Obtener la lista de VINOS ordenados alfabéticamente. Para cada vino se requiere su nombre y la cantidad total  de botellas producidas.	   
+3	Para cada vino  (número y nombre) dar  la cantidad de PRODUCTORES que lo producen.	   
+4	¿Cuáles PRODUCTORES producen por lo menos tres VINOS diferentes?, para cada productor seleccionado, se solicita su nombre y su apellido.	   
+5	Para un productor, un vino es significativo si ha sido cosechado en una cantidad superior a 200 botellas.  Calcular el número de VINOS significativos para cada productor. Para aquellos PRODUCTORES que tengan por lo menos un vino significativo se debe indicar el nombre y el apellido.
+a.       Concebir la respuesta bajo la forma de dos consultas, en donde la segunda consulta se apoye en los resultados de la primera (defina la primera como una vista SQL).
+b.       Conciba la respuesta utilizando solo una consulta SQL.	   
+6	¿Qué PRODUCTORES (número, nombre y apellido) producen al menos todos los VINOS producidos por el productor 35? 
+a         Escribir la consulta utilizando la función COUNT. 
+b         Escribir la consulta utilizando el cuantificador existencial.	 
+*****************************************************************/
+PROMPT 1	Para el vino número 12, hallar la cantidad total de botellas producidas.	
+PROMPT SOLUCIÓN: SUM(cantidad)= 390	   
+
+
+ 	SELECT SUM (cantidad)
+FROM COSECHAS
+WHERE nvin = 12;
+   
+PROMPT 2	Obtener la lista de VINOS ordenados alfabéticamente. 
+PROMPT Para cada vino se requiere su nombre y la cantidad total de botellas producidas.	
+PROMPT SOLUCIÓN: Número de  tuplas: 32
+
+ 	SELECT nombre , SUM(cantidad) AS botellas
+FROM  VINOS v, COSECHAS  c
+WHERE v.num  = c.nvin
+GROUP BY nombre;
+	   
+PROMPT 3	Para cada vino  (número y nombre) dar  la cantidad de PRODUCTORES que lo producen.
+PROMPT SOLUCIÓN: Número de tuplas: 43
+
+ 	SELECT v.num, v.nombre, COUNT(*) AS CANTIDAD
+FROM VINOS v, COSECHAS c
+WHERE v.num = c.nvin
+GROUP BY v.num, v.nombre;
+	   
+PROMPT 4	¿Cuáles PRODUCTORES producen por lo menos tres VINOS diferentes?, 
+PROMPT      para cada productor seleccionado, se solicita su nombre y su apellido.	
+PROMPT SOLUCIÓN: Número de tuplas:  5
+/* Errores clásicos:
+a. Olvidar la clausula DISTNCT.
+b. Olvidar en el GROUP BY el p.num. Implica contar en el mismo grupo a los homónimos.
+*/
+
+ 	SELECT p.nombre,  p.apellido
+FROM PRODUCTORES  p, COSECHAS  c, VINOS  v
+WHERE p.num = c.nprod  AND
+c.nvin = v.num
+GROUP BY p.num, p.nombre, p.apellido
+HAVING  COUNT(DISTINCT  v.nombre) >= 3;
+	   
+PROMPT 5	Para un productor, un vino es significativo si ha sido cosechado en una cantidad superior a 200 botellas.  
+PROMPT Calcular el número de VINOS significativos para cada productor. 
+PROMPT Para aquellos PRODUCTORES que tengan por lo menos un vino significativo se debe indicar el nombre y el apellido.
+PROMPT a.       Concebir la respuesta bajo la forma de dos consultas, en donde la segunda consulta se apoye en los resultados 
+PROMPT de la primera (defina la primera como una vista SQL).
+PROMPT b.       Conciba la respuesta utilizando solo una consulta SQL.	   
+PROMPT 
+PROMPT  	Solución a)
+PROMPT Creación de la vista:
+
+CREATE VIEW   VINOSPRODUCTOR AS
+SELECT p.num, p.nombre, p.apellido, v.nombre as vino
+FROM PRODUCTORES p, COSECHAS c, VINOS v
+WHERE p.num =  c.nprod AND v.num = c.nvin
+GROUP BY p.num , p.nombre, p.apellido, v.nombre
+HAVING  SUM (c.cantidad) > 200;
+
+PROMPT Consulta: (35 filas)
+
+SELECT nombre, apellido , count (*) AS CUANTOS
+FROM VINOSPRODUCTOR 
+GROUP BY num, nombre, apellido;
+
+PROMPT Solución b) (35 filas)
+
+SELECT p.nombre, p.apellido, COUNT(DISTINCT v.nombre)
+FROM PRODUCTORES p, COSECHAS c, VINOS v
+WHERE p.num = c.nprod  AND
+c.nvin = v.num    AND
+v.nombre  IN (  SELECT  v1.nombre
+FROM VINOS v1, COSECHAS c1
+WHERE c1.nprod = p.num  AND
+c1.nvin  = v1.num
+GROUP BY  v1.nombre
+HAVING SUM(c1.cantidad) > 200 )
+GROUP BY p.num,p.nombre, p.apellido;
+
+
+PROMPT SOLUCIÓN: Número de tuplas:  35 tuplas.
+/* Errores clásicos:
+a.  Olvidar la clausula DISTINCT al interior del COUNT  , contando varias veces el mismo vino.
+b.  No agrupar por el número del productor.	 */  
+
+PROMPT 6	¿Qué PRODUCTORES (número, nombre y apellido) producen al menos todos los VINOS producidos por el productor 33?
+PROMPT a    Escribir la consulta utilizando la función COUNT.
+PROMPT b    Escribir la consulta utilizando el cuantificador existencial.	   
+PROMPT 
+PROMPT  	SOLUCIÓN:Número de tuplas: 2.
+PROMPT a. Solución utilizando COUNT.   */
+
+SELECT  p.num , p.nombre, p.apellido
+FROM     PRODUCTORES  p ,  COSECHAS c1,   COSECHAS c2
+WHERE   c2.nprod = 33
+AND  c1.nvin = c2.nvin
+AND  c1.nprod != 33
+AND c1.nprod = p.num
+GROUP BY  p.num, p.nombre, p.apellido
+HAVING COUNT(*)  = ( SELECT COUNT(*)  FROM COSECHAS WHERE nprod = 33);
+
+PROMPT una solución alternativa:
+
+SELECT p.num, p.nombre, p.apellido
+FROM   PRODUCTORES p, COSECHAS c
+WHERE p.num = c.nprod AND
+p.num != 33 AND
+c.nvin  IN  ( SELECT c2.nvin FROM COSECHAS c2 WHERE c2.nprod = 33)
+GROUP BY p.num, p.nombre, p.apellido
+HAVING COUNT(*) = (SELECT COUNT(*) FROM COSECHAS WHERE nprod = 33);
+
+/*Nota:
+En este caso, como el conjunto de VINOS cosechados por un productor, no es obligatoriamente un subconjunto de los VINOS
+cosechados por el productor número 33,  es necesario calcular para cada cosechero, cual es la produccción comun  con  
+la producción del  fabricante  número 33.*/
+
+PROMPT Otra Solución.
+
+select num, nombre, apellido
+from productores, cosechas
+where nvin in (select distinct nvin from cosechas where nprod = 33)
+and num = nprod and nprod <>33
+group by num, nombre, apellido
+
+PROMPT b. Solución utilizando EXISTS.
+/*La expresión del cálculo relacional de tuplas que representa esta consulta es:
+{  t  /    PARA TODO  c1  (  COSECHAS(c1)    AND  c1.nprod = 33  ==>
+EXISTE p  ( PRODUCTORES(p)  AND p.num != 33   AND
+EXISTE c2 ( COSECHAS(c2)
+AND  c1.nvin  = c2.nvin
+AND  p.num  =   c2.nprod
+AND  p.nombre  = t.nombre
+AND  p.apellido = t.apellido
+AND p.num = t.num)))}
+Para Expresar esta consulta solo en términos del cuantificador existencial:
+{  t  /    NO  EXISTE  c1  (  COSECHAS(c1)    AND  c1.nprod = 33  AND
+NOT EXISTE p  ( PRODUCTORES(p)  AND p.num != 33
+EXISTE c2 ( COSECHAS(c2)
+AND  c1.nvin  = c2.nvin
+AND  p.num  =   c2.nprod
+AND  p.nombre  = t.nombre
+AND  p.apellido = t.apellido
+AND p.num = t.num)))}
+En SQL tenemos:  */
+
+SELECT  p.num, p.nombre, p.apellido
+FROM     PRODUCTORES p
+WHERE  p.num != 33  AND
+NOT EXISTS  ( SELECT  *
+FROM COSECHAS  c1
+WHERE c1.nprod = 33
+AND NOT EXISTS (SELECT *
+FROM COSECHAS c2
+WHERE c1.nvin = c2.nvin
+AND p.num = c2.nprod ));	 

@@ -1,0 +1,266 @@
+PROMPT BD PARIS-DAKAR 2015 CON TABLAS DE EQUIPOS-PARTICIPANTES-ETAPAS-PREMIADOS-PREMIOS
+PROMPT   SOLO CONTEMPLAREMOS PARTICIPANTES DE MOTOS y ALGUNOS DATOS SON FICTICIOS
+PROMPT
+PROMPT Borrando previamente las tablas: EQUIPOS-PARTICIPANTES-ETAPAS-PREMIADOS-PREMIOS
+--************************************************--
+DROP TABLE Equipos cascade constraint;
+DROP TABLE Participantes cascade constraint;
+DROP TABLE  Etapas cascade constraint;
+DROP TABLE  Premios cascade constraint;
+DROP TABLE  Premiados cascade constraint;
+--************************************************--
+PROMPT creando tablas: EQUIPOS-PARTICIPANTES-ETAPAS-PREMIADOS-PREMIOS
+CREATE TABLE Equipos(
+nom_equip VARCHAR2(45),
+nacionalidad VARCHAR2(25),
+PRIMARY KEY(nom_equip));
+
+CREATE TABLE Participantes(
+dorsal NUMBER PRIMARY KEY,
+nombre VARCHAR2(35),
+ans NUMBER,       /* SOLO NOS INTERESA LA EDAD DEL PARTICIPANTE EN EL MOMENTO DEL INICIO DE LA CARRERA */
+nom_equip VARCHAR2(45),
+CONSTRAINT PART_FK_EQUI FOREIGN KEY(nom_equip) REFERENCES Equipos(nom_equip) ON DELETE CASCADE
+);
+
+CREATE TABLE Etapas(
+num_etapa NUMBER PRIMARY KEY,
+km_etapa NUMBER,
+salida VARCHAR2(25),
+llegada VARCHAR2(25),
+dorsal NUMBER,
+CONSTRAINT ETAP_FK_PART FOREIGN KEY(dorsal) REFERENCES Participantes(dorsal) ON DELETE CASCADE);
+
+CREATE TABLE Premios(
+num_premio NUMBER PRIMARY KEY,
+tipo VARCHAR2(25),
+premio VARCHAR2(25)
+);
+
+CREATE TABLE Premiados(
+dorsal NUMBER,
+num_etapa NUMBER,
+num_premio NUMBER,
+PRIMARY KEY(dorsal,num_etapa,num_premio),
+CONSTRAINT PART_FK_PREMIADOS FOREIGN KEY(dorsal) REFERENCES Participantes(dorsal) ON DELETE  CASCADE,
+CONSTRAINT ETAP_FK_PREMIADOS FOREIGN KEY(num_etapa) REFERENCES Etapas(num_etapa) ON DELETE CASCADE,
+CONSTRAINT PREMIO_FK_PREMIADOS FOREIGN KEY(num_premio) REFERENCES Premios(num_premio) ON DELETE CASCADE
+);
+PROMPT INSERTANDO LOS DATOS EN LAS TABLAS
+INSERT INTO Equipos VALUES ('ADVRIDER/ NEDURO', 'ETATS-UNIS');
+INSERT INTO Equipos VALUES ('AJR', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('AL LIMITE DAKAR 2012', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('ARCARONS SERVICE', 'ESPAGNE');
+INSERT INTO Equipos VALUES ('AVANT MOTOS HONDA GENUINE OIL', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('BORDONE-FERRARI', 'ESPAGNE');
+INSERT INTO Equipos VALUES ('BRASIL MOTO TOUR', 'BRESIL');
+INSERT INTO Equipos VALUES ('C.M PROMO', 'FRANCE');
+INSERT INTO Equipos VALUES ('CABALLERO RACING TEAM', 'CHILI');
+INSERT INTO Equipos VALUES ('COSTA DA MORTE', 'ESPAGNE');
+INSERT INTO Equipos VALUES ('CROCOAVENTURES', 'FRANCE');
+INSERT INTO Equipos VALUES ('CZECH DAKAR TEAM', 'REP. TCHEQUE');
+INSERT INTO Equipos VALUES ('DAKAR CHALLENGE', 'FRANCE');
+INSERT INTO Equipos VALUES ('DESERT ROSE RACING', 'ROYAUME-UNI');
+INSERT INTO Equipos VALUES ('DKR SPIRIT TEAM', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('EMS', 'FRANCE');
+INSERT INTO Equipos VALUES ('EQUIPO COMBAT', 'ESPAGNE');
+INSERT INTO Equipos VALUES ('EVETTE-DAKAR', 'FRANCE');
+INSERT INTO Equipos VALUES ('FLEVO DAKAR TEAM', 'PAYS-BAS');
+INSERT INTO Equipos VALUES ('FRANCO PICCO RACING', 'ITALIE');
+INSERT INTO Equipos VALUES ('FREEDOM RALLY', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('FREEDOM RALLY RACING', 'ETATS-UNIS');
+INSERT INTO Equipos VALUES ('TEAM RPM KAWASAKI', 'ARGENTINE');
+INSERT INTO Equipos VALUES ('GHR HONDA', 'AUSTRALIE');
+INSERT INTO Equipos VALUES ('GIOFIL APRILIA', 'FRANCE');
+INSERT INTO Equipos VALUES ('YAMAHA RACING FRANCE', 'FRANCE');
+INSERT INTO Equipos VALUES ('KTM MRW RALLY FACTORY TEAM', 'ESPAGNE');
+
+INSERT INTO Participantes VALUES (1,'COMA MARC',18, 'KTM MRW RALLY FACTORY TEAM');
+INSERT INTO Participantes VALUES (2,'DESPRES CYRIL',31, 'DKR SPIRIT TEAM');
+INSERT INTO Participantes VALUES (3,'RODRIGUES HELDER',32, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (4,'LOPEZ CONTARDO FRANCISCO',30, 'GIOFIL APRILIA');
+INSERT INTO Participantes VALUES (5,'PEDRERO GARCIA JUAN',29, 'KTM MRW RALLY FACTORY TEAM');
+INSERT INTO Participantes VALUES (6,'ULLEVALSETER PAL',24, 'GHR HONDA');
+INSERT INTO Participantes VALUES (7,'GONÃ‡ALVES PAULO',28, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (8,'FARIA RUBEN',44, 'GHR HONDA');
+INSERT INTO Participantes VALUES (9,'CODY QUINN ALEXIS',21, 'KTM MRW RALLY FACTORY TEAM');
+INSERT INTO Participantes VALUES (10,'VILADOMS JORDI',30, 'KTM MRW RALLY FACTORY TEAM');
+INSERT INTO Participantes VALUES (11,'PRZYGONSKI KUBA',30, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (12,'FRETIGNE DAVID',30, 'GHR HONDA');
+INSERT INTO Participantes VALUES (13,'CASTEU DAVID',30, 'GHR HONDA');
+INSERT INTO Participantes VALUES (14,'VERHOEVEN FRANS',30, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (15,'PAIN OLIVIER',30, 'GIOFIL APRILIA');
+INSERT INTO Participantes VALUES (16,'CZACHOR JACEK',30, 'GIOFIL APRILIA');
+INSERT INTO Participantes VALUES (17,'STREET JONAH',30, 'DKR SPIRIT TEAM');
+INSERT INTO Participantes VALUES (18,'FARRES GUELL GERARD',30, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (19,'AUBERT JOHNNY',30, 'DKR SPIRIT TEAM');
+INSERT INTO Participantes VALUES (20,'DUCLOS ALAIN',30, 'GHR HONDA');
+INSERT INTO Participantes VALUES (21,'BARREDA BORT JOAN',30, 'FREEDOM RALLY');
+INSERT INTO Participantes VALUES (22,'GOUET DANIEL',30, 'GIOFIL APRILIA');
+INSERT INTO Participantes VALUES (23,'RODRIGUES FILHO JOSE',30, 'DKR SPIRIT TEAM');
+INSERT INTO Participantes VALUES (24,'PIZZOLITO JAVIER',30, 'TEAM RPM KAWASAKI');
+INSERT INTO Participantes VALUES (25,'CECI PAOLO',30, 'YAMAHA RACING FRANCE');
+INSERT INTO Participantes VALUES (26,'SERRADORI MATHIEU',30, 'TEAM RPM KAWASAKI');
+INSERT INTO Participantes VALUES (27,'PROHENS FELIPE',30, 'YAMAHA RACING FRANCE');
+INSERT INTO Participantes VALUES (28,'DA COSTA BRUNO',30, 'YAMAHA RACING FRANCE');
+INSERT INTO Participantes VALUES (29,'PRATA PEDRO BIANCHI',30, 'YAMAHA RACING FRANCE');
+INSERT INTO Participantes VALUES (30,'SALVATIERRA JUAN CARLOS',30, 'TEAM RPM KAWASAKI');
+
+INSERT INTO Premios VALUES (1,'Medalla','Oro');
+INSERT INTO Premios VALUES (2,'Medalla','Plata');
+INSERT INTO Premios VALUES (3,'Medalla','Bronce');
+INSERT INTO Premios VALUES (4,'Copa','Oro');
+INSERT INTO Premios VALUES (5,'Copa','Plata');
+INSERT INTO Premios VALUES (6,'Copa','Bronce');
+
+INSERT INTO Etapas VALUES (1,769,'Mar del Plata','Santa Rosa',1);
+INSERT INTO Etapas VALUES (2,293,'Santa Rosa','San Rafael',1);
+INSERT INTO Etapas VALUES (3,388,'San Rafael','San Juan',3);
+INSERT INTO Etapas VALUES (4,265,'San Juan','Chilecito',5);
+INSERT INTO Etapas VALUES (5,394,'Chilecito','FiambalÃ¡',6);
+INSERT INTO Etapas VALUES (6,444,'FiambalÃ¡','CopiapÃ³ (Chile)',5);
+INSERT INTO Etapas VALUES (7,557,'CopiapÃ³ (Chile)','Antofagasta',1);
+INSERT INTO Etapas VALUES (8,377,'Antofagasta','Iquique',2);
+INSERT INTO Etapas VALUES (9,538,'Iquique','Arica',9);
+INSERT INTO Etapas VALUES (10,246,'Arica','Arequipa (PerÃº)',7);
+INSERT INTO Etapas VALUES (11,276,'Arequipa (PerÃº)','Nasca',3);
+INSERT INTO Etapas VALUES (12,254,'Nasca','Pisco',1);
+INSERT INTO Etapas VALUES (13,239,'Pisco','Lima',3);
+
+INSERT INTO Premiados VALUES (1,1,1);
+INSERT INTO Premiados VALUES (3,2,2);
+INSERT INTO Premiados VALUES (7,3,3);
+INSERT INTO Premiados VALUES (11,4,4);
+INSERT INTO Premiados VALUES (15,6,6);
+INSERT INTO Premiados VALUES (1,5,1);
+INSERT INTO Premiados VALUES (1,6,4);
+INSERT INTO Premiados VALUES (3,1,3);
+INSERT INTO Premiados VALUES (1,8,2);
+INSERT INTO Premiados VALUES (1,9,3);
+INSERT INTO Premiados VALUES (7,9,2);
+INSERT INTO Premiados VALUES (7,5,3);
+PROMPT FINALIZACIÓN DE LA INTRODUCCIÓN DE DATOS EN TABLAS
+/******************************************************************************************************
+   1 LISTA LAS ETAPAS DEL DAKAR Y DESPUES SELECCIONA LAS ETAPAS QUE TIENEN MAS DE 500 KMS?
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 1 ******************
+
+SELECT * FROM Etapas;
+
+SELECT salida, llegada, km_etapa FROM Etapas WHERE km_etapa >= 500;
+
+/******************************************************************************************************
+   2 OBTENER EL NUMERO TOTAL DE EQUIPOS Y EL NUMERO TOTAL DE CORREDORES QUE PARTICIPAN EN EL DAKAR DE MOTOS.
+   Especificamos Equipos.nom_equip para evitar la ambiguedad del campo nom_equip, ya que tambien existe
+   en la tabla Participantes.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 2 ******************
+SELECT COUNT(DISTINCT Equipos.nom_equip) TOTAL_EQUIPOS, COUNT(DISTINCT dorsal) TOTAL_CORREDORES
+FROM Equipos, Participantes;          /* TOTAL_EQUIPOS y TOTAL_CORREDORES  son ALIAS DE LOS CALCULOS*/ 
+
+/******************************************************************************************************
+   3 OBTENER UN LISTADO DE EQUIPOS INDICANDO EL NÚMERO DE CORREDORES DE CADA UNO.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 3 ******************
+SELECT Participantes.nom_equip, COUNT(dorsal) NUMERO_DE_CORREDORES FROM Participantes GROUP BY nom_equip;
+
+/******************************************************************************************************
+   4 OBTENER UN LISTADO ORDENADO DE EQUIPOS Y DENTRO DE ESTOS OTRO ORDENADO DE CORREDORES.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 4 ******************
+SELECT Participantes.nom_equip LISTA_EQUIPOS, nombre LISTA_CORREDORES FROM Participantes ORDER BY LISTA_EQUIPOS, LISTA_CORREDORES;
+
+/******************************************************************************************************
+   5 BORRA LOS DATOS DEL PARTICIPANTE QUE CORRE CON EL DORSAL Num 12.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 5 ******************
+SELECT * FROM Participantes WHERE dorsal=12;  /* RESULTADO: '12', 'FRETIGNE DAVID', '30', 'GHR HONDA' */
+
+DELETE FROM Participantes WHERE dorsal=12;    /* PROCESO DE BORRADO */
+
+SELECT * FROM Participantes WHERE dorsal=12;  /* RESULTADO: DATOS EN BLANCO (Ya no existe) */
+
+/******************************************************************************************************
+   6 OBTEN EL NOMBRE DEL CORREDOR MAS JOVEN.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 6 ******************
+SELECT MIN(ans) MENOR_EDAD FROM Participantes;    /** ESTA LINEA Devuelve la menor edad */
+
+SELECT nombre FROM Participantes WHERE ans IN(SELECT MIN(ans) FROM Participantes); /* Devuelve el nombre de la menor edad */
+
+/******************************************************************************************************
+   7 OBTEN EL NÚMERO DE CORREDORES DE CADA EQUIPO.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 7 ******************
+SELECT nom_equip EQUIPO, count(*) NUM_CORREDORES_DEL_EQUIPO FROM Participantes GROUP BY nom_equip;
+
+/******************************************************************************************************
+   8 OBTEN EL NOMBRE DE LOS EQUIPOS QUE TENGAN 4 o MAS CORREDORES.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 8 ******************
+SELECT nom_equip EQUIPO, count(*) NUM_DE_CORREDORES_EN_EL_EQUIPO FROM Participantes GROUP BY nom_equip HAVING COUNT(*)>=4;
+
+/******************************************************************************************************
+   9 OBTEN EL NOMBRE DE LOS CORREDORES QUE HAYAN GANADO MÁS DE UNA ETAPA.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 9 ******************
+SELECT nombre, count(*) NUM_ETAPAS_GANADAS FROM Participantes, Etapas 
+WHERE Participantes.dorsal=Etapas.dorsal GROUP BY nombre HAVING COUNT(*)>1;
+
+/******************************************************************************************************
+   10 OBTEN EL NOMBRE DE LOS CORREDORES QUE NO HAYAN GANADO NINGUNA ETAPA.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 10 ******************
+SELECT dorsal FROM Etapas;        /*** ESTA LINEA Devuelve el dorsal de los GANADORES de ETAPAS */
+
+SELECT nombre FROM Participantes WHERE dorsal NOT IN(SELECT dorsal FROM Etapas); /* Mejorándolo a continuación */
+
+SELECT nombre NO_GANARON_ETAPAS FROM Participantes WHERE dorsal NOT IN(SELECT dorsal FROM Etapas) ORDER BY nombre;
+
+/******************************************************************************************************
+   11 OBTEN EL NOMBRE DE LOS CORREDORES QUE TENGAN LOS MISMOS PREMIOS QUE MARC COMA.
+*******************************************************************************************************/
+PROMPT ****************** CONSULTA 11 ******************
+SELECT nombre FROM Participantes, Premios, Premiados 
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND  Premiados.num_premio 
+IN(SELECT Premios.num_premio FROM Participantes, Premios, Premiados
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND nombre='COMA MARC');
+
+/******************************************************************************************************
+   12  (SIN DUPLICADOS) NOMBRE  DE LOS CORREDORES QUE TENGAN LOS MISMOS PREMIOS QUE MARC COMA. 
+ *****************************************************************************************************/
+PROMPT ****************** CONSULTA 12 ******************
+PROMPT Primero veremos los premios que tiene Marc Coma 
+
+SELECT Premios.num_premio, Premios.tipo, Premios.premio FROM Participantes, Premios, Premiados
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND nombre='COMA MARC';
+
+PROMPT Luego solo mostraremos el NUM de los premios que tiene Marc Coma 
+
+SELECT Premios.num_premio FROM Participantes, Premios, Premiados
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND nombre='COMA MARC';
+
+PROMPT Y ahora veremos los corredores que coinciden con los mismos premios que Marc Coma 
+
+SELECT DISTINCT(nombre) FROM Participantes, Premios, Premiados 
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND  Premiados.num_premio 
+IN(SELECT Premios.num_premio FROM Participantes, Premios, Premiados
+WHERE Participantes.dorsal=Premiados.dorsal AND Premiados.num_premio=Premios.num_premio AND nombre='COMA MARC');
+
+/*****************************************************************************************************
+                 LAS PREGUNTAS 13 y 14 SON PARA QUE PRACTIQUES Y LAS RESUELVAS TU
+******************************************************************************************************
+   13  BORRA LOS DATOS DE LOS EQUIPOS QUE FIGURAN EN LA TABLA EQUIPOS. 
+ *****************************************************************************************************
+   14  BORRA DE UNA EN UNA TODAS LAS TABLAS. 
+ *****************************************************************************************************/
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,409 @@
+-- Creación de la tabla Departamento 
+DROP TABLE Departamento; 
+CREATE TABLE Departamento(codDepto varchar(4)PRIMARY KEY, 
+nombreDpto varchar(20) NOT NULL, 
+ciudad varchar(15), 
+codDirector varchar(12) 
+); 
+ 
+-- Creación de la tabla Empleado 
+DROP TABLE Empleado; 
+CREATE TABLE  Empleado(nDIEmp VARCHAR(12) NOT NULL PRIMARY KEY, 
+nomEmp VARCHAR(30) NOT NULL, 
+sexEmp CHAR(1) NOT NULL CHECK(sexEmp IN ('F','M')), 
+fecNac DATE NOT NULL, 
+fecIncorporacion DATE NOT NULL, 
+salEmp FLOAT NOT NULL, 
+comisionE FLOAT NOT NULL, 
+cargoE VARCHAR(15) NOT NULL, 
+jefeID VARCHAR(12), 
+codDepto VARCHAR(4) NOT NULL,
+-- Declaración de las llaves foráneas: 
+CONSTRAINT FK_Empl FOREIGN KEY (jefeID) REFERENCES Empleado(nDIEmp), 
+CONSTRAINT FK_Dpto FOREIGN KEY (codDepto) REFERENCES Departamento(codDepto) 
+); 
+-- Cada frase desde -- hasta el final de la línea es ignorado (es un comentario) 
+-- Instrucción SQL para la introducción de los datos de Departamento: 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('1000', 'GERENCIA', 'CALI', '31.840.269');  
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('1500', 'PRODUCCIÓN', 'CALI', '16.211.383'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('2000', 'VENTAS', 'CALI', '31.178.144'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('3000', 'INVESTIGACIÓN', 'CALI', '16.759.060');  
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('3500', 'MERCADEO', 'CALI', '22.222.222'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('2100', 'VENTAS', 'POPAYAN', '31.751.219'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('2200', 'VENTAS', 'BUGA', '768.782'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('2300', 'VENTAS', 'CARTAGO', '737.689'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('4000', 'MANTENIMIENTO', 'CALI', '333.333.333'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('4100', 'MANTENIMIENTO', 'POPAYAN', '888.888'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('4200', 'MANTENIMIENTO', 'BUGA', '11.111.111'); 
+INSERT INTO Departamento (codDepto, nombreDpto, ciudad, coddirector) VALUES  ('4300', 'MANTENIMIENTO', 'CARTAGO', '444.444'); 
+
+-- Instrucción SQL para la introducción de datos de Empleado: 
+
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES 
+('31.840.269', 'María Rojas', 'F', '15-01-1959', '16-05-1990', 6250000, 1500000, 'Gerente', NULL, '1000');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('16.211.383', 'Luis Pérez', 'M', '25-02-1956', '01-01-2000', 5050000, 0, 'Director', '31.840.269', '1500');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('31.178.144', 'Rosa Angulo', 'F',  '15-03-1957', '16-08-1998', 3250000, 3500000, 'Jefe Ventas', '31.840.269', '2000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('16.759.060', 'Darío Casas', 'M', '05-04-1960', '01-11-1992', 4500000, 500000, 'Investigador', '31.840.269', '3000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('22.222.222', 'Carla López', 'F', '11-05-1975', '16-07-2005',  4500000, 500000, 'Jefe Mercadeo', '31.840.269', '3500'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('22.222.333', 'Carlos Rozo', 'M', '11-05-1975', '16-09-2001',  750000, 500000, 'Vigilante', '31.840.269', '3500'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.751.219', 'Melissa Roa', 'F', '19-06-1960', '16-03-2001', 2250000, 2500000, 'Vendedor', '31.178.144', '2100'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('768.782', 'Joaquín Rosas', 'M', '07-07-1947', '16-05-1990', 2250000, 2500000, 'Vendedor', '31.178.144', '2200'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('737.689', 'Mario Llano', 'M', '30-08-1945', '16-05-1990', 2250000, 2500000, 'Vendedor', '31.178.144', '2300');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('333.333.333', 'Elisa Rojas', 'F', '28-09-1979', '01-06-2004', 3000000, 1000000, 'Jefe Mecánicos', '31.840.269', '4000');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('888.888', 'Iván Duarte', 'M', '12-08-1955',  '16-05-1998',  1050000, 200000, 'Mecánico', '333.333.333', '4100');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('11.111.111', 'Irene Díaz', 'F', '28-09-1979', '01-06-2004', 1050000, 200000, 'Mecánico', '333.333.333', '4200'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('444.444', 'Abel Gómez', 'M', '24-12-1939', '01-10-2000', 1050000, 200000, 'Mecánico', '333.333.333', '4300'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.222', 'José Giraldo', 'M', '20-01-1985', '01-11-2000', 1200000, 400000, 'Asesor', '22.222.222', '3500'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('19.709.802', 'William Daza', 'M', '09-10-1982', '16-12-1999', 2250000, 1000000,'Investigador', '16.759.060', '3000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('31.174.099', 'Diana Solarte', 'F', '19-11-1957', '16-05-1990', 1250000, 500000, 'Secretaria', '31.840.269', '1000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.777', 'Marcos Cortez', 'M', '23-06-1986', '16-04-2000',  2550000, 500000, 'Mecánico', '333.333.333', '4000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.782', 'Antonio Gil', 'M', '23-01-1980', '16-04-2010', 850000, 1500000, 'Técnico', '16.211.383', '1500'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('333.333.334', 'Marisol Pulido', 'F', '01-10-1979', '16-05-1990', 3250000, 1000000, 'Investigador', '16.759.060', '3000');
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('333.333.335', 'Ana Moreno', 'F', '05-01-1992', '01-06-2004', 1200000, 400000, 'Secretaria', '16.759.060', '3000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.333', 'Pedro Blanco', 'M', '28-10-1987', '01-10-2000', 800000, 3000000, 'Vendedor', '31.178.144', '2000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.444', 'Jesús Alfonso', 'M', '14-03-1988', '01-10-2000', 800000, 3500000, 'Vendedor', '31.178.144', '2000'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('333.333.336', 'Carolina Ríos', 'F', '15-02-1992', '01-10-2000', 1250000, 500000, 'Secretaria', '16.211.383', '1500'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('333.333.337', 'Edith Muñoz', 'F', '31-03-1992', '01-10-2000', 800000, 3600000, 'Vendedor', '31.178.144', '2100'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.555', 'Julián Mora', 'M', '03-07-1989', '01-10-2000', 800000, 3100000, 'Vendedor', '31.178.144', '2200'); 
+INSERT INTO Empleado (nDIEmp, nomEmp, sexEmp, fecNac, fecIncorporacion, salEmp, comisionE, cargoE, jefeID, codDepto) VALUES
+('1.130.666', 'Manuel Millán', 'M', '08-12-1990', '01-06-2004', 800000, 3700000, 'Vendedor', '31.178.144', '2300'); 
+ 
+-- ----------------------------------------------------------
+-- Solución a los Ejercicios de SQL propuestos- 
+-- ---------------------------------------------------------- 
+-- 1.	Obtener los datos completos de los empleados: 
+ SELECT * FROM Empleado; 
+-- 2.	Obtener los datos completos de los departamentos: 
+ SELECT * FROM Departamento; 
+ -- 3.	Obtener los datos de los empleados con cargo 'Secretaria': 
+SELECT * 
+FROM Empleado 
+WHERE cargoE = 'Secretaria'; 
+-- 4.	Obtener el nombre y salario de los empleados:
+ SELECT nomEmp, salEmp FROM Empleado;
+-- 5.	Obtener los datos de los empleados vendedores, ordenado por nombre:  
+SELECT * 
+FROM Empleado 
+WHERE cargoE = 'Vendedor' 
+ORDER BY nomEmp; 
+-- 6.	Listar el nombre de los departamentos:
+SELECT nombreDpto FROM Departamento;            -- incluye repetidos
+SELECT DISTINCT nombreDpto FROM Departamento;   -- excluye repetidos
+-- 7.	Listar el nombre de los departamentos, ordenado por nombre:
+SELECT DISTINCT nombreDpto 
+FROM Departamento 
+ORDER BY nombreDpto; 
+-- 8.	Listar el nombre de los departamentos, ordenado por ciudad:
+SELECT nombreDpto, ciudad -- en esta línea se puede suprimir ciudad, si se desea
+FROM Departamento 
+ORDER BY ciudad; 
+-- 9.	Listar el nombre de los departamentos, ordenado por ciudad, en orden inverso:  
+SELECT nombreDpto, ciudad 
+FROM Departamento 
+ORDER BY ciudad desc; 
+-- 10.	Obtener el nombre y cargo de todos los empleados, ordenado por salario: 
+SELECT nomEmp, cargoE 
+FROM Empleado
+ORDER BY salEmp;  
+-- 11.	Obtener el nombre y cargo de todos los empleados, ordenado por cargo y por salario:
+SELECT nomEmp, cargoE, salEmp
+FROM Empleado
+ORDER BY cargoE, salEmp;
+-- 12.	Obtener el nombre y cargo de todos los empleados, en orden inverso por cargo:
+SELECT nomEmp, cargoE 
+FROM Empleado 
+ORDER BY cargoE DESC; 
+-- 13.	Listar los salarios y comisiones de los empleados del departamento 2000:
+SELECT nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE codDepto = '2000'; 
+-- 14.	Listar los salarios y comisiones de los empleados del departamento 2000, ordenado por comisión: 
+SELECT nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE codDepto = '2000' 
+ORDER BY comisionE; 
+-- 15.	Listar todas las comisiones:
+SELECT comisionE 
+FROM Empleado; 
+-- 16.	Listar las comisiones que sean diferentes, ordenada por valor:
+SELECT DISTINCT comisionE 
+FROM Empleado 
+ORDER BY comisionE; 
+-- 17.	Listar los diferentes salarios:
+SELECT DISTINCT salEmp 
+FROM Empleado 
+ORDER BY salEmp; 
+-- 18.	Obtener el valor total a pagar que resulta de sumar a los empleados
+--      del departamento 3000 una bonificación de 500€, ordenado por salario:
+SELECT nomEmp, salEmp, 'Pago Total = €', salEmp+500 FROM Empleado 
+WHERE codDepto = '3000'
+ORDER BY salEmp; 
+-- 19.	Obtener la lista de los empleados que ganan una comisión superior a su sueldo:
+SELECT nDIEmp, nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE comisionE > salEmp; 
+-- 20.	Listar los empleados cuya comisión es menor o igual que el 30% de su sueldo:
+SELECT nDIEmp, nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE comisionE <= salEmp*0.30; 
+-- 21.	Elabore un listado donde para cada fila, figure ‘Nombre’ y ‘Cargo’ en lugar del nombre del campo de cada empleado:
+SELECT 'Nombre: ', nomEmp, 'Cargo: ', cargoE 
+FROM Empleado; 
+-- 22.	Hallar el salario y la comisión de aquellos empleados cuyo DNI es superior al '19.709.802': 
+SELECT 	nDIEmp, nomEmp, salEmp, comisionE FROM Empleado WHERE nDIEmp > '19.709.802'; 
+-- 23.	Listar nombres de los empleados cuyo salario sea menor o igual que el 40% de su comisión:
+SELECT nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE salEmp <= comisionE*0.40;  
+-- 24.	Divida los empleados, generando un grupo cuyo nombre inicie por la letra J y termine en la letra Z. 
+--      Liste estos empleados y su cargo por orden alfabético:     
+SELECT JZ.nomEmp, JZ.cargoE 
+FROM (SELECT * 
+      FROM Empleado 
+      WHERE nomEmp> 'J' AND nomEmp <'z')  
+JZ                   -- alias de la subconsulta
+ORDER BY nomEmp; 
+-- 25.	Listar el salario, la comisión, el salario total (salario + comisión), 
+--      documento de identidad del empleado y nombre, de aquellos empleados que tienen comisión superior 
+--      a 1.000.000€, ordenar el informe por el número del documento de identidad:  
+SELECT nDIEmp, nomEmp, salEmp, comisionE, (salEmp+comisionE) as total
+FROM Empleado
+WHERE comisionE > 1000000
+ORDER BY nDIEmp;
+-- 26.  Obtener un listado similar al anterior, pero de aquellos empleados que NO tienen comisión:  
+ 
+SELECT nDIEmp, nomEmp, salEmp, comisionE, (salEmp+comisionE) as total 
+FROM Empleado 
+WHERE comisionE = 0 
+ORDER BY nDIEmp; 
+-- 27.	Hallar el nombre de los empleados que tienen un salario superior a 1.000.000€, 
+--      y tienen como jefe al empleado con documento de identidad '31.840.269':
+SELECT nomEmp 
+FROM Empleado 
+WHERE salEmp > 1000000 AND  
+      jefeID = '31.840.269'; 
+--  28.	Hallar el conjunto complementario del resultado del ejercicio anterior:      
+SELECT nomEmp  
+FROM Empleado 	 
+WHERE salEmp <= 1000000 AND 
+      jefeID = '31.840.269'; 
+-- 29.	Hallar los empleados cuyo nombre no contiene la cadena “MA”:
+SELECT nomEmp 
+FROM Empleado 
+WHERE nomEmp LIKE 'Ma%';  
+-- 30.	Obtener los nombres de los departamentos que no sean “Ventas” ni “Investigación” NI ‘MANTENIMIENTO’, ordenados por ciudad: 
+SELECT nombreDpto, ciudad 
+FROM Departamento 
+WHERE nombreDpto NOT IN ('VENTAS',  
+'INVESTIGACIÓN','MANTENIMIENTO') 	 
+ORDER BY ciudad; 
+-- 31.	Obtener el nombre y el departamento de los empleados con cargo 'Secretaria' o 'Vendedor', 
+--      que no trabajan en el departamento de “PRODUCCION”, cuyo salario es superior a 1.000.000€, 
+--      ordenados por fecha de incorporación: 
+SELECT E.nomEmp, E. cargoE, D.nombreDpto 
+FROM Departamento D, Empleado E 
+WHERE cargoE NOT IN ('Secretaria', 
+'Vendedor') AND 
+    salEmp > 1000000 AND      E.coddepto = D.coddepto AND 
+    E.coddepto NOT IN 
+        (SELECT F.coddepto  
+         FROM Departamento F  
+         WHERE F.nombredpto='PRODUCCIÓN'); 
+--  32.	Obtener información de los empleados cuyo nombre tiene exactamente 11 caracteres:         
+SELECT nomEmp, length(nomEmp) 
+FROM Empleado 
+WHERE length(nomEmp) = 11; 
+-- 33.	Obtener información de los empleados cuyo nombre tiene al menos 11 caracteres:
+SELECT nomEmp, length(nomEmp)  
+FROM Empleado 
+WHERE length(nomEmp) >= 11; 
+-- 34.	Listar los datos de los empleados cuyo nombre inicia por la letra 'M', 
+--      su salario es mayor a 800.000€ o reciben comisión y trabajan para el departamento de 'VENTAS':
+SELECT nomEmp,  
+       substr(nomEmp,1,1) 
+FROM Empleado 
+WHERE substr(nomEmp,1,1)='M' 
+      AND 
+      (salEmp > 800000 OR comisionE > 0)
+      AND 
+      codDepto IN 
+      (SELECT codDepto 
+       FROM DEpartamento 
+       WHERE nombreDpto = 'VENTAS'); 
+--  35.  Obtener los nombres, salarios y comisiones de los empleados que reciben un salario situado
+--       entre la mitad de la comisión la propia comisión:      
+SELECT nomEmp, salEmp, comisionE 
+FROM Empleado 
+WHERE salEmp >= comisionE/2 AND salEmp <= comisionE; 
+--  36. Suponga que la empresa va a aplicar un reajuste salarial del 7%. Listar los nombres de los empleados, su 
+--      salario actual y su nuevo salario, indicando para cada uno de ellos si tiene o no comisión: 
+SELECT  nomEmp,  salEmp,  (salEmp*1.07), 
+comisionE 
+FROM Empleado; 
+-- 37. Obtener  la  información  disponible  del  empleado  cuyo  número  de  documento  de  identidad  sea: 
+--     '31.178.144', '16.759.060', '1.751.219', '768.782', '737.689', '19.709.802', '31.174.099', '1.130.782':
+SELECT nDIEmp, nomEmp 
+FROM Empleado 
+WHERE  
+nDIEmp  IN  ('31.178.144', '16.759.060', '1.751.219', '768.782', '737.689', '19.709.802', '31.174.099', '1.130.782');
+-- 38. Entregar un listado de todos los empleados ordenado por su departamento, y alfabético dentro del departamento: 
+SELECT nDIEmp, nomEmp, codDepto 
+FROM Empleado 
+ORDER BY codDepto, nomEmp; 
+-- 39. Entregar el salario más alto de la empresa: 
+SELECT nomEmp 
+FROM Empleado 
+WHERE salEmp IN 
+      (SELECT MAX(salEmp) 
+       FROM Empleado); 
+-- 40. Entregar el total a  pagar por comisiones, y el número de empleados que las reciben: 
+SELECT count(nDIEmp), sum(comisionE) 
+FROM Empleado 
+WHERE comisionE > 0; 
+-- 41. Entregar el nombre del último empleado de la lista por orden alfabético: 
+SELECT MAX(nomEmp)AS Ultimo_nombre 
+FROM Empleado;  
+-- 42. Hallar el salario más alto, el más bajo y la diferencia entre ellos: 
+SELECT MAX(salEmp), MIN(salEmp),  
+       MAX(salEmp)-MIN(salEmp) AS Diferencia_salarial
+FROM Empleado; 
+-- 43. Conocido el resultado anterior, mostrar el nombre de los empleados que reciben el salario más alto 
+--     y más bajo. Cuánto suman estos salarios?: 
+SELECT MAX(salEmp), MIN(salEmp),  
+       MAX(salEmp)+MIN(salEmp) AS Suma_salarial
+FROM Empleado; 
+-- 44. Mostrar el número de empleados de sexo femenino y de sexo masculino, por departamento:
+SELECT  codDepto,sexEmp,COUNT(nomEmp) AS Num_de_empleados_y_empleadas
+FROM Empleado 
+GROUP BY codDepto,sexEmp;
+-- 45. Hallar el salario promedio por departamento: 
+SELECT codDepto, AVG(salEmp) AS Salario_Medio
+FROM Empleado 
+GROUP BY codDepto; 
+-- 46. Hallar el salario promedio por departamento, considerando aquellos empleados cuyo salario supera 
+--     900.000€, y aquellos con salarios inferiores a 575.000€. Mostrar el código y el nombre del departamento:
+SELECT N.codDepto, D.nombreDpto, N.Salario_Promedio 
+FROM Departamento D,  
+    (SELECT codDepto, AVG(salEmp) AS Salario_Promedio 
+      FROM Empleado  
+      WHERE salEmp > 900000 AND 
+            salEmp > 575000 
+      GROUP BY codDepto) N 
+WHERE N.codDepto = D.codDepto;  
+-- 47. Mostrar la lista de los  empleados cuyo salario  es mayor o igual que el promedio de la empresa, 
+--     Ordenarlo por departamento: 
+SELECT  E.codDepto,  E.nomEmp,  E.salEmp, N.proT 
+FROM Empleado E,  
+     (SELECT AVG(salEmp) AS proT 
+      FROM Empleado) N 
+WHERE E.salEmp >= N.proT 
+ORDER BY E.codDepto; 
+-- 48. Hallar los departamentos que tienen más de tres empleados. Mostrar el número de empleados de esos departamentos:
+SELECT N.codDepto, D.nombreDpto, N.Num_de_empleados 
+FROM Departamento D,  
+   (SELECT codDepto, COUNT(nDIEmp) AS Num_de_empleados 
+    FROM Empleado  
+      GROUP BY codDepto 
+      HAVING COUNT(nDIEmp)>3) N 
+WHERE N.codDepto = D.codDepto;
+--  49. Mostrar el nombre del departamento cuya suma de salarios sea la más alta, indicando el valor de la suma: 
+--  Solución paso a paso:
+--  1º Calcular  el  total  de  salarios  por departamento: 
+CREATE VIEW SumSalar AS  
+    (SELECT  codDepto,  SUM(salEmp)  AS sumS 
+      FROM Empleado  
+      GROUP BY codDepto); 
+ 
+-- Listar la suma de salarios por Departamento: 
+SELECT * 
+FROM  SumSalar; 
+-- 2º Hallar la suma de salarios más alta: 
+CREATE VIEW SumSalar2 AS  
+     (SELECT MAX(sumS) sSalD 
+      FROM SumSalar); 
+-- Listar la suma de salarios más alta: 
+SELECT * 
+FROM SumSalar2; 
+-- 3º Listar  el  nombre  del  departamento con suma de salarios sea la más alta: 
+SELECT D.nombreDpto, E.sSalD 
+FROM Departamento D,  
+     (SELECT codDepto, sSalD 
+      FROM SumSalar2 S2, SumSalar S1 
+      WHERE S2.sSalD = S1.sumS) E 
+WHERE D.codDepto = E.codDepto; 
+-- 50. Mostrar un informe con el código y nombre de cada jefe, junto al número de empleados que dirige. 
+--     Puede haber empleados que no tengan supervisores, para esto se indicará solamente el número de 
+--     ellos dejando los valores restantes en NULL. 
+SELECT D.nDIEmp, D.nomEmp, E.noSu 
+FROM Empleado D,  
+    (SELECT jefeId, COUNT(nDIEmp) AS noSu 
+     FROM Empleado 
+     WHERE jefeId IS NOT NULL 
+     GROUP BY jefeId) E 
+WHERE D.nDIEmp = E.jefeId 
+ORDER BY E.noSu DESC ; 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  
+ 
+
+ 
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+

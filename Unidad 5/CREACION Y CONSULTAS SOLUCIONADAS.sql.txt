@@ -1,0 +1,372 @@
+-- Conectamos como administradores con conn sys as sysdba
+-- conn sys as sysdba
+-- Creamos un usario llamado c##dpto y le concedemos los permisos.
+-- create user c##dpto identified by dpto default tablespace users;
+-- grant connect, resource,DBA to c##dpto;
+-- CONNECT c##dpto/dpto;
+
+CREATE TABLE PROVEEDORES(
+p# varchar2(2) not null,
+pnombre varchar2(30) not null,
+categoria number(2) not null,
+ciudad varchar2(20) not null);
+
+alter table PROVEEDORES add constraints pk_p# primary key(p#);
+
+insert into PROVEEDORES values ('P1','CARLOS',20,'SEVILLA');
+insert into PROVEEDORES values ('P2','JUAN',10,'MADRID');
+insert into PROVEEDORES values ('P3','JOSE',30,'SEVILLA');
+insert into PROVEEDORES values ('P4','INMA',20,'SEVILLA');
+insert into PROVEEDORES values ('P5','EVA',30,'CACERES');
+
+SELECT * FROM PROVEEDORES;
+
+CREATE TABLE COMPONENTES(
+c# varchar2(2) not null,
+cnombre varchar2(3) not null,
+color varchar2(10) not null,
+peso number(2),
+ciudad varchar2(20) not null);
+
+alter table COMPONENTES add constraints pk_c# primary key(c#);
+
+insert into COMPONENTES values ('C1','X3A','ROJO',12,'SEVILLA');
+insert into COMPONENTES values ('C2','B85','VERDE',17,'MADRID');
+insert into COMPONENTES values ('C3','C4B','AZUL',17,'MALAGA');
+insert into COMPONENTES values ('C4','C4B','ROJO',14,'SEVILLA');
+insert into COMPONENTES values ('C5','VT8','AZUL',12,'MADRID');
+insert into COMPONENTES values ('C6','C30','ROJO',19,'SEVILLA');
+
+SELECT * FROM COMPONENTES;
+
+create table ARTICULOS(
+t# varchar2(2) not null,
+tnombre varchar2(15) not null,
+ciudad varchar(20) not null);
+
+alter table ARTICULOS add constraints pk_t# primary key(t#);
+
+insert into ARTICULOS values ('T1','CLASIFICADORA','MADRID');
+insert into ARTICULOS values ('T2','PERFORADORA','MALAGA');
+insert into ARTICULOS values ('T3','LECTORA','CACERES');
+insert into ARTICULOS values ('T4','CONSOLA','CACERES');
+insert into ARTICULOS values ('T5','MEZCLADORA','SEVILLA');
+insert into ARTICULOS values ('T6','TERMINAL','BARCELONA');
+insert into ARTICULOS values ('T7','CINTA','SEVILLA');
+
+SELECT * FROM ARTICULOS;
+
+CREATE TABLE ENVIOS(
+p# varchar2(2) not null,
+c# varchar2(2) not null,
+t# varchar2(2) not null,
+cantidad number(3));
+
+alter table ENVIOS add constraints pk_pct# primary key(p#,c#,t#);
+
+alter table ENVIOS add constraints fk_p# foreign key(p#) references PROVEEDORES(P#);
+alter table ENVIOS add constraints fk_c# foreign key(c#) references COMPONENTES(c#);
+alter table ENVIOS add constraints fk_t# foreign key(t#) references ARTICULOS(t#);
+
+insert into ENVIOS values ('P1','C1','T1',200);
+insert into ENVIOS values ('P1','C1','T4',700);
+insert into ENVIOS values ('P2','C3','T1',400);
+insert into ENVIOS values ('P2','C3','T2',200);
+insert into ENVIOS values ('P2','C3','T3',200);
+insert into ENVIOS values ('P2','C3','T4',500);
+insert into ENVIOS values ('P2','C3','T5',600);
+insert into ENVIOS values ('P2','C3','T6',400);
+insert into ENVIOS values ('P2','C3','T7',800);
+insert into ENVIOS values ('P2','C5','T2',100);
+insert into ENVIOS values ('P3','C3','T1',200);
+insert into ENVIOS values ('P3','C4','T2',500);
+insert into ENVIOS values ('P4','C6','T3',300);
+insert into ENVIOS values ('P4','C6','T7',300);
+insert into ENVIOS values ('P5','C2','T2',200);
+insert into ENVIOS values ('P5','C2','T4',100);
+insert into ENVIOS values ('P5','C5','T4',500);
+insert into ENVIOS values ('P5','C5','T7',100);
+insert into ENVIOS values ('P5','C6','T2',200);
+insert into ENVIOS values ('P5','C1','T4',100);
+insert into ENVIOS values ('P5','C3','T4',200);
+insert into ENVIOS values ('P5','C4','T4',800);
+insert into ENVIOS values ('P5','C5','T5',400);
+insert into ENVIOS values ('P5','C6','T4',500);
+
+SELECT * FROM ENVIOS;
+
+
+-- 1. Obtener todos los detalles de todos los articulos de CACERES.
+SELECT * 
+FROM articulos 
+WHERE ciudad = 'CACERES';
+
+-- 2. Obtener todos los valores de P# para los proveedores que abastecen el artículo T1.
+SELECT DISTINCT p# 
+FROM envios 
+WHERE t#='T1';
+
+-- 3. Obtener la lista de pares de atributos (COLOR, CIUDAD) de la tabla componentes  eliminando los pares duplicados. 
+SELECT DISTINCT color , ciudad 
+FROM componentes; 
+
+-- 4. Obtener de la tabla de articulos los valores de T# y CIUDAD donde el nombre de la ciudad acaba en D o contiene al menos una E. 
+SELECT t#, ciudad 
+FROM articulos 
+WHERE ciudad LIKE '%D' OR 
+ ciudad LIKE '%E%'; 
+
+-- 5. Obtener los valores de P# para los proveedores que suministran para el articulo T1 el  componente C1. 
+SELECT p# 
+FROM envios 
+WHERE t#='T1' AND c#='C1'; 
+
+-- 6. Obtener los valores de TNOMBRE en orden alfabético para los articulos abastecidos por el proveedor P1. 
+SELECT tnombre 
+FROM articulos a, envios e 
+WHERE e.p#='P1' AND e.t#=a.t# 
+ORDER BY tnombre;
+
+-- también:
+
+SELECT tnombre 
+FROM articulos NATURAL JOIN envios 
+WHERE p#='P1' 
+ORDER BY tnombre; 
+
+-- 7. Obtener los valores de C# para los componentes suministrados para cualquier articulo de MADRID. 
+SELECT DISTINCT c# 
+FROM envios 
+WHERE t# IN ( SELECT t# 
+ FROM articulos 
+ WHERE ciudad='MADRID');
+
+-- 8. Obtener todos los valores de C# de los componentes tales que ningún otro componente  tenga un valor de peso inferior. 
+SELECT c# 
+FROM componentes 
+WHERE peso = (SELECT MIN(peso) 
+ FROM componentes );
+
+-- 9. Obtener los valores de P# para los proveedores que suministren los articulos T1 y T2. 
+SELECT p# 
+FROM envios 
+WHERE t#='T1' 
+INTERSECT 
+SELECT p# 
+FROM envios 
+WHERE t#='T2'; 
+
+-- 10. Obtener los valores de P# para los proveedores que suministran para un articulo de SEVILLA o MADRID un componente ROJO. 
+SELECT p# 
+FROM envios e, componentes c, articulos a 
+WHERE e.c#=c.c# AND e.t#=a.t# AND 
+ c.color='ROJO' AND 
+ a.ciudad IN('SEVILLA', 'MADRID'); 
+ 
+ -- también:
+ 
+SELECT p# 
+FROM componentes c JOIN (envios e 
+ NATURAL JOIN articulos a) ON c.c#=e.c# 
+WHERE c.color='ROJO' AND 
+ a.ciudad IN('SEVILLA', 'MADRID');
+
+-- 11. Obtener, mediante subconsultas, los valores de C# para los componentes suministrados para algún articulo de SEVILLA por un proveedor de SEVILLA. 
+SELECT c# 
+FROM envios 
+WHERE t# IN ( SELECT t# 
+ FROM articulos 
+ WHERE ciudad='SEVILLA') 
+AND p# IN (SELECT p# 
+ FROM proveedores 
+ WHERE ciudad='SEVILLA'); 
+
+-- 12. Obtener los valores de T# para los articulos que usan al menos un componente que se puede obtener con el proveedor P1. 
+SELECT DISTINCT t# 
+FROM envios 
+WHERE c# IN ( SELECT DISTINCT c# 
+ FROM envios 
+ WHERE p#='P1' );
+
+-- 13. Obtener todas las ternas (CIUDAD, C#, CIUDAD) tales que un proveedor de la primera ciudad suministre el componente especificado para un articulo montado en la segunda ciudad.
+SELECT p.ciudad ,e.c#, a.ciudad 
+FROM envios e, proveedores p , articulos a 
+WHERE e.p#=p.p# AND e.t#=a.t#; 
+
+-- también:
+
+ SELECT p.ciudad ,e.c#, a.ciudad 
+FROM proveedores p JOIN (envios e NATURAL 
+JOIN articulos a) ON p.p#=e.p#;
+
+-- 14. Repetir el ejercicio anterior pero sin recuperar las ternas en los que los dos valores de ciudad sean los mismos.
+SELECT p.ciudad ,c#, a.ciudad 
+FROM envios e, proveedores p , articulos a 
+WHERE e.p#=p.p# AND 
+ e.t#=a.t# AND 
+ p.ciudad <> a.ciudad; 
+ 
+ -- también:
+ 
+ SELECT p.ciudad ,e.c#, a.ciudad 
+FROM proveedores p JOIN (envios e NATURAL JOIN 
+articulos a) ON p.p#=e.p# and p.ciudad <>a.ciudad; 
+
+-- 15. Obtener el número de suministros, el de articulos distintos suministrados y la cantidad total de articulos suministrados por el proveedor P2. 
+SELECT COUNT(*) AS "Número de Suministros", 
+ COUNT (DISTINCT t#) AS "Artículos Suministrados", 
+SUM(cantidad) AS "Total Artículos Suministrados" 
+FROM envios 
+WHERE p#='P2'; 
+
+
+-- 16. Para cada articulo y componente suministrado obtener los valores de C#, T# y la cantidad total correspondiente. 
+SELECT c#,t#, SUM(cantidad) AS "Total" 
+FROM envios 
+GROUP BY c#,t#; 
+
+-- 17. Obtener los valores de T# de los articulos abastecidos al menos por un proveedor que no viva en MADRID y que no esté en la misma ciudad en la que se monta el articulo. 
+SELECT DISTINCT e.t# 
+FROM envios e,articulos a 
+WHERE e.t# = a.t# AND EXISTS 
+ (SELECT * 
+ FROM proveedores p 
+ WHERE p.ciudad!= a.ciudad AND 
+ p.p# = e.p# AND 
+ p.ciudad!='MADRID' ); 
+
+-- 18. Obtener los valores de P# para los proveedores que suministran al menos un componente  suministrado al menos por un proveedor que suministra al menos un componente ROJO. 
+SELECT distinct p# 
+FROM envios 
+WHERE c# IN 
+ (SELECT c# 
+ FROM envios 
+ WHERE p# IN 
+ ( SELECT p# 
+ FROM envios NATURAL JOIN componentes 
+ WHERE color='ROJO') ); 
+
+-- 19. Obtener los identificadores de articulos, T#, para los que se ha suministrado algún componente del que se haya suministrado una media superior a 320 articulos. 
+SELECT DISTINCT t# 
+FROM envios 
+WHERE c# IN ( SELECT c# 
+ FROM envios 
+ GROUP BY c# 
+ HAVING AVG(cantidad) > 320 );
+
+-- 20. Seleccionar los identificadores de proveedores que hayan realizado algún envío con Cantidad mayor que la media de los envíos realizados para el componente a que corresponda dicho envío. 
+SELECT distinct p# 
+FROM envios a 
+WHERE cantidad > (SELECT AVG(cantidad)
+ FROM envios b 
+ WHERE b.c#=a.c# ); 
+
+-- 21. Seleccionar los identificadores de componentes suministrados para el articulo 'T2' por el proveedor 'P2'. 
+SELECT c# 
+FROM envios 
+WHERE t# = 'T2' AND p# = 'P2';
+
+-- 22. Seleccionar todos los datos de los envíos realizados de componentes cuyo color no sea 'ROJO'. 
+SELECT e.* 
+FROM envios e, componentes c 
+WHERE e.c# = c.c# AND color <> 'ROJO'; 
+
+-- también:
+
+SELECT envios.* 
+FROM envios NATURAL JOIN componentes
+WHERE color <> 'ROJO'; 
+
+-- 23. Seleccionar los identificadores de componentes que se suministren para los articulos 'T1' y 'T2'. 
+SELECT c# 
+FROM envios 
+WHERE t# ='T1' 
+INTERSECT 
+SELECT c# 
+FROM envios 
+WHERE t# ='T2'; 
+
+-- 24. Seleccionar el identificador de proveedor y el número de envíos de componentes de color 'ROJO' llevados a cabo por cada proveedor. 
+SELECT p#, count(*) A 
+FROM envios 
+WHERE c# IN ( SELECT c# 
+ FROM componentes 
+ WHERE color = 'ROJO') 
+GROUP BY p# ; 
+
+-- 25. Seleccionar los colores de componentes suministrados por el proveedor 'P1'. 
+SELECT DISTINCT color 
+FROM componentes 
+WHERE c# IN ( SELECT DISTINCT c# 
+ FROM envios 
+ WHERE p# = 'P1'); 
+
+-- 26. Seleccionar los datos de envío y nombre de ciudad de aquellos envíos que cumplan que el articulo, proveedor y componente son de la misma ciudad.
+SELECT e.*, c.ciudad 
+FROM envios e, componentes c, 
+ articulos a, proveedores p 
+WHERE e.t# = a.t# AND e.c# = c.c# AND 
+ e.p# = p.p# AND p.ciudad=c.ciudad AND 
+ p.ciudad = a.ciudad; 
+
+-- también:
+
+SELECT e.* 
+FROM articulos NATURAL JOIN 
+ ( proveedores NATURAL JOIN 
+ (envios e NATURAL JOIN componentes));
+
+-- 27. Seleccionar los nombres de los componentes que son suministrados en una cantidad total superior a 500. 
+SELECT DISTINCT cnombre 
+FROM componentes 
+WHERE c# IN ( SELECT c# 
+ FROM envios 
+ GROUP BY c# 
+ HAVING SUM(cantidad)> 500);
+
+-- 28. Seleccionar los identificadores de proveedores que residan en Sevilla y no suministren más de dos articulos distintos. 
+(SELECT p# 
+FROM proveedores 
+ WHERE ciudad='SEVILLA') 
+MINUS 
+(SELECT p# 
+FROM envios 
+GROUP BY p# 
+HAVING COUNT(DISTINCT t#) > 2); 
+
+-- 29. Seleccionar los identificadores de articulos para los cuales todos sus componentes se fabrican en una misma ciudad. 
+SELECT t# 
+FROM envios e,componentes c 
+WHERE e.c# = c.c# 
+GROUP BY t# 
+HAVING COUNT(DISTINCT ciudad) = 1 ; 
+
+-- también:
+
+SELECT t# 
+FROM envios NATURAL JOIN componentes 
+GROUP BY t# 
+HAVING COUNT(DISTINCT ciudad) = 1 ; 
+
+-- 30. Seleccionar los identificadores de articulos para los que se provean envíos de todos los componentes existentes en la base de datos. 
+SELECT t# 
+FROM Envios 
+GROUP BY t# 
+HAVING COUNT(DISTINCT c#) = ( SELECT COUNT(*) 
+ FROM Componentes) ; 
+
+-- 31. Seleccionar los códigos de proveedor y articulo que suministran al menos dos componentes de color 'ROJO'
+
+SELECT p#, t# 
+FROM envios e,componentes c 
+WHERE e.c# = c.c# AND c.color='ROJO' 
+GROUP BY p#, t# 
+HAVING COUNT (*) > 1; 
+
+-- también:
+
+SELECT p#, t# 
+FROM envios NATURAL JOIN componentes 
+WHERE color='ROJO' 
+GROUP BY p#, t# 
+HAVING COUNT (*) > 1; 
