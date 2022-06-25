@@ -1,0 +1,53 @@
+create table clientes3(
+	Dni varchar2(10),
+	Nombre varchar2(10),
+	Apellidos varchar2(15),
+	PRIMARY KEY (Dni)	);	
+
+create table pedidos3(
+	id_pedido INTEGER,
+	fecha DATE,
+	Cantidad INTEGER,
+	cliente_Dni varchar2(10),
+	PRIMARY KEY (id_pedido),
+	CONSTRAINT Pedidos3_Clientes3FK FOREIGN KEY (cliente_Dni) REFERENCES clientes3(Dni)	);	
+
+CREATE TABLE Posibles_clientes3(
+Dni varchar2(10),
+Nombre varchar2(10),
+Apellidos varchar2(15),
+PRIMARY KEY (Dni));
+
+INSERT INTO clientes3 VALUES ('12345678R','Emiliano','Gomez');
+INSERT INTO pedidos3 VALUES (111,'22/02/2013',2,'12345678R');
+INSERT INTO Posibles_clientes3 VALUES ('11111111A','Rafael','Veiga');
+INSERT INTO Posibles_clientes3 VALUES ('22222222B','Rafael','Paradela');
+INSERT INTO Posibles_clientes3 VALUES ('33333333C' ,'Manuel' ,'Vieites'); 
+INSERT INTO Posibles_clientes3 VALUES ('44444444D','Benjamin','Lois');
+INSERT INTO Posibles_clientes3 VALUES ('55555555E','Tomas','De Novoa');
+
+SELECT * FROM clientes3;
+SELECT * FROM pedidos3;
+SELECT * FROM Posibles_clientes3;
+
+/* ***************************************************************************************************** 
+   Añadiremos los datos de la tabla Posibles_clientes3 a la tabla clientes3 con INSERT INTO y SELECT
+   Y fijaros en que el listado resultante está ordenado (por defecto) por el campo clave ascendentemente.
+   *************************************************************************************************** */
+
+INSERT INTO clientes3(Dni, Nombre, Apellidos) SELECT Dni, Nombre, Apellidos FROM Posibles_clientes3;
+SELECT * FROM clientes3;
+
+/* ************************************************************************************ 
+   Añadiremos una fila pero solo con Dni y Nombre a la tabla clientes3 con INSERT VALUES
+   ********************************************************************************* */
+
+INSERT INTO clientes3(Dni, Nombre) VALUES ('66666666X','Carmen');
+SELECT * FROM clientes3;
+
+/* ************************************************************************************ 
+   SI BORRAMOS PRIMERO clientes3 ME DARÍA UN ERROR DE FOREIGN KEY
+   ********************************************************************************* */
+DROP TABLE pedidos3;
+DROP TABLE clientes3;
+DROP TABLE Posibles_clientes3;

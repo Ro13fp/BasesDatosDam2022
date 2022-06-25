@@ -1,0 +1,77 @@
+DROP TABLE Datos_Ventas;
+DROP TABLE Zonas;
+
+CREATE TABLE Datos_Ventas(
+Tienda VARCHAR(15),
+Ventas INTEGER,
+Fecha  DATE);
+CREATE TABLE Zonas(
+Región VARCHAR(15),
+Tienda VARCHAR(15));
+
+INSERT INTO Datos_Ventas VALUES ('Lugo',200,'20/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Santiago',400,'17/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Orense',800,'25/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Ferrol',700,'27/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Vigo',400,'28/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Santiago',1000,'18/02/2013');
+
+INSERT INTO Zonas VALUES ('Zona vieja','Lugo');
+INSERT INTO Zonas VALUES ('Casco antiguo','Orense');
+INSERT INTO Zonas VALUES ('Area Central','Santiago');
+INSERT INTO Zonas VALUES ('Zona portuaria','Vigo');
+
+SELECT * FROM Datos_Ventas;
+SELECT * FROM Zonas;
+
+/* ***************************************************************************************************** 
+   1 SELECCIONANDO DATOS: Mostraremos la suma total de ventas.
+   *************************************************************************************************** */
+
+SELECT SUM(Ventas) FROM Datos_Ventas;
+
+/* ***************************************************************************************************** 
+   2 SELECCIONANDO DATOS: Mostraremos el número de filas de la tabla Datos_Ventas.
+   *************************************************************************************************** */
+
+SELECT COUNT(Tienda) FROM Datos_Ventas;
+SELECT COUNT(DISTINCT Tienda) FROM Datos_Ventas;
+
+
+/* ***************************************************************************************************** 
+   3 SELECCIONANDO DATOS: Mostraremos las ventas agrupadas por tiendas.
+   *************************************************************************************************** */
+
+SELECT Tienda, SUM(Ventas) FROM Datos_Ventas GROUP BY Tienda;
+
+/* ***************************************************************************************************** 
+   4 SELECCIONANDO DATOS: Mostraremos las ventas agrupadas por tiendas cuyas ventas sean mayores de 700.
+   *************************************************************************************************** */
+
+SELECT Tienda, SUM(Ventas) FROM Datos_Ventas GROUP BY Tienda HAVING SUM(Ventas)>700;
+
+/* ***************************************************************************************************** 
+   5 SELECCIONANDO DATOS: Mostraremos ventas máximas de las tiendas agrupadas por nombre.
+   *************************************************************************************************** */
+
+SELECT Tienda, MAX(Ventas) FROM Datos_Ventas GROUP BY Tienda;
+
+/* ***************************************************************************************************** 
+   6 SELECCIONANDO DATOS: Mostraremos la suma de ventas totales de las tiendas agrupadas de Santiago.
+   *************************************************************************************************** */
+
+SELECT Tienda, SUM(Ventas) FROM Datos_Ventas GROUP BY Tienda HAVING Tienda='Santiago';
+
+/* ***************************************************************************************************** 
+   7 SELECCIONANDO DATOS: Mostraremos las ventas máximas de tiendas agrupadas por su nombre.
+   *************************************************************************************************** */
+
+SELECT Tienda, MAX(Ventas) FROM Datos_Ventas GROUP BY Tienda;
+
+/* ***************************************************************************************************** 
+   8 SELECCIONANDO DATOS: Mostraremos datos de tiendas y suma de ventas agrupadas por iguales valores de
+   tienda y ventas. Y en la segunda instrucción para las ventas igual a 1000.
+   *************************************************************************************************** */
+
+SELECT Tienda, SUM(Ventas) FROM Datos_Ventas GROUP BY Tienda, Ventas;
+SELECT Tienda, SUM(Ventas) FROM Datos_Ventas GROUP BY Tienda, Ventas HAVING Ventas=1000;

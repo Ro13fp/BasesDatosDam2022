@@ -1,0 +1,56 @@
+create table Clientes2(
+	Dni VARCHAR2(10),
+	Nombre VARCHAR2(10),
+	Apellido VARCHAR2(15),
+	PRIMARY KEY (Dni)	);	
+
+create table Pedidos2(
+	id_pedido INTEGER,
+	fecha DATE,
+	Cantidad INTEGER,
+	cliente_Dni VARCHAR2(10),
+	PRIMARY KEY (id_pedido),
+	CONSTRAINT Pedidos2_Clientes2FK FOREIGN KEY (cliente_Dni) REFERENCES Clientes2(Dni));	
+
+INSERT INTO Clientes2 VALUES ('12345678P','Emiliano','Gomez Vazquez');
+INSERT INTO Pedidos2 VALUES (123,'23/12/2013',2,'12345678P');
+
+SELECT * FROM Clientes2;
+SELECT * FROM Pedidos2;
+
+ /* ****************************************************************************** 
+   Añadimos dos columnas (direccion y telefono) a la tabla Clientes con ALTER...ADD
+  **************************************************************************** */
+ 
+ALTER TABLE Clientes2 ADD tfno VARCHAR2(9);
+ALTER TABLE Clientes2 ADD direccion VARCHAR2(18);
+  SELECT * FROM Clientes2;
+ 
+/* ******************************************************************************************* 
+   Cambiamos el nombre de la columna tfno por telefono en la tabla Clientes con RENAME COLUM
+  ****************************************************************************************** */
+  
+ALTER TABLE Clientes2 RENAME COLUMN tfno TO telefono;
+SELECT * FROM Clientes2;
+/* ****************************************************************************** 
+   Cambiamos el tipo de datos de una columna (Apellido de VARCHAR(15) a VARCHAR(22)
+   en la tabla Clientes con ALTER...MODIFY
+  **************************************************************************** */
+ 
+ALTER TABLE Clientes2 MODIFY Apellido VARCHAR2(22);
+SELECT * FROM Clientes2;
+/* ****************************************************************************** 
+   Eliminamos la columna telefono en la tabla Clientes con ALTER...DROP COLUMN
+  **************************************************************************** */
+ 
+ALTER TABLE Clientes2 DROP COLUMN telefono;
+SELECT * FROM Clientes2;
+
+/* ******************************************************************************** 
+   Eliminamos la tabla Clientes2 y no nos dejará por el foreign key, posteriormente
+   borraremos previamente Pedidos2 y después Clientes2 y sí lo permitirá.
+  ****************************************************************************** */
+DROP TABLE CLIENTES2;
+
+DROP TABLE PEDIDOS2;
+DROP TABLE CLIENTES2;

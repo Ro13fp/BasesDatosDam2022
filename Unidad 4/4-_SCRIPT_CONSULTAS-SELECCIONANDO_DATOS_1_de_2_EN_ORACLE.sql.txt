@@ -1,0 +1,78 @@
+CREATE TABLE Datos_Ventas(
+Tienda VARCHAR(15),
+Ventas INTEGER,
+Fecha  DATE);
+CREATE TABLE Zonas(
+Región VARCHAR(15),
+Tienda VARCHAR(15));
+
+INSERT INTO Datos_Ventas VALUES ('Lugo',200,'20/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Santiago',400,'17/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Orense',800,'25/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Ferrol',700,'27/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Vigo',400,'28/02/2013');
+INSERT INTO Datos_Ventas VALUES ('Santiago',1000,'18/02/2013');
+
+INSERT INTO Zonas VALUES ('Zona vieja','Lugo');
+INSERT INTO Zonas VALUES ('Casco antiguo','Orense');
+INSERT INTO Zonas VALUES ('Area Central','Santiago');
+INSERT INTO Zonas VALUES ('Zona portuaria','Vigo');
+
+SELECT * FROM Datos_Ventas;
+SELECT * FROM Zonas;
+
+/* ***************************************************************************************************** 
+   1 SELECCIONANDO DATOS: Mostraremos el nombre de todas las tiendas de la tabla Datos_Ventas. Observo
+   que la tienda de Santiago SE REPITE dos veces en el resultado.
+   *************************************************************************************************** */
+
+SELECT Tienda FROM Datos_Ventas;
+
+/* ***************************************************************************************************** 
+   2 SELECCIONANDO DATOS: Mostraremos el nombre de todas las tiendas de la tabla Datos_Ventas. Observo
+   que la tienda de Santiago YA NO SE REPITE dos veces en el resultado.
+   *************************************************************************************************** */
+
+SELECT DISTINCT Tienda FROM Datos_Ventas;
+
+/* ***************************************************************************************************** 
+   3 SELECCIONANDO DATOS: Mostraremos el nombre de todas las tiendas de la tabla Datos_Ventas 
+   CUYAS VENTAS SEAN MAYORES QUE 900.
+   *************************************************************************************************** */
+
+SELECT Tienda FROM Datos_Ventas WHERE Ventas >900;
+
+/* ***************************************************************************************************** 
+   4 SELECCIONANDO DATOS: Mostraremos el nombre de todas las tiendas de la tabla Datos_Ventas 
+   CUYAS VENTAS SON MAYORES A 900 ó CON VENTAS COMPRENDIDAS ENTRE 300 y 450 (dos condiciones compuestas)
+   *************************************************************************************************** */
+
+SELECT Tienda FROM Datos_Ventas WHERE Ventas>900 OR (Ventas<450 AND Ventas>300);
+
+/* ***************************************************************************************************** 
+   5 SELECCIONANDO DATOS: Mostraremos datos de tiendas "Lugo o Santiago" de la tabla Datos_Ventas con IN
+   *************************************************************************************************** */
+
+SELECT * FROM Datos_Ventas WHERE Tienda IN('Lugo', 'Santiago');
+
+/* ***************************************************************************************************** 
+   6 SELECCIONANDO DATOS: Mostraremos datos de tiendas cuyo nombre contenga la letra g    (con LIKE)
+   *************************************************************************************************** */
+
+SELECT * FROM Datos_Ventas WHERE Tienda LIKE '%g%';
+
+/* ***************************************************************************************************** 
+   7 SELECCIONANDO DATOS: Mostraremos datos de tiendas ordenadas descendentemente por ventas(con ORDER BY)
+   *************************************************************************************************** */
+
+SELECT * FROM Datos_Ventas ORDER BY Ventas DESC;
+
+/* ***************************************************************************************************** 
+   8 SELECCIONANDO DATOS: Mostraremos datos de tiendas ordenadas ascendentemente por ventas y dentro de
+   ellas, ordenado descendentemente por fecha(con ORDER BY)
+   *************************************************************************************************** */
+
+SELECT * FROM Datos_Ventas ORDER BY Ventas ASC, Fecha DESC;
+
+DROP TABLE Datos_Ventas;
+DROP TABLE Zonas;

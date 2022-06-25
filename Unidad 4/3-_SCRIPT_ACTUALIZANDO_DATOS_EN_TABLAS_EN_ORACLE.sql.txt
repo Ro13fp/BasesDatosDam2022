@@ -1,0 +1,50 @@
+create table Clientes4(
+	Dni VARCHAR2(10),
+	Nombre VARCHAR2(10),
+	Apellidos VARCHAR2(15),
+	PRIMARY KEY (Dni)	);	
+
+create table Pedidos4(
+	id_pedido INTEGER,
+	fecha DATE,
+	Cantidad INTEGER,
+	cliente_Dni VARCHAR2(10),
+	PRIMARY KEY (id_pedido),
+	FOREIGN KEY (cliente_Dni) REFERENCES Clientes4(Dni)	);	
+
+CREATE TABLE Posibles_Clientes4(
+Dni VARCHAR2(10),
+Nombre VARCHAR2(10),
+Apellidos VARCHAR2(15),
+PRIMARY KEY (Dni));
+
+INSERT INTO Clientes4 VALUES ('12345678R','Emiliano','Gomez');
+INSERT INTO Clientes4 VALUES ('11111111A','Rafael','Veiga');
+INSERT INTO Clientes4 VALUES ('22222222B','Rafael','Paradela');
+INSERT INTO Clientes4 VALUES ('33333333C' ,'Manuel' ,'Vieites'); 
+INSERT INTO Clientes4 VALUES ('44444444D','Benjamin','Lois');
+INSERT INTO Clientes4 VALUES ('55555555E','Tomas','De Novoa');
+INSERT INTO Pedidos4 VALUES ('111','22/02/2013',2,'12345678R');
+
+SELECT * FROM Clientes4;
+SELECT * FROM Pedidos4;
+
+/* ***************************************************************************************************** 
+   ACTUALIZANDO DATOS: Actualizaremos de la tabla Clientes4 todas las filas en las que aparece Rafael 
+   cambiando su nombre por el de Susana. 
+   *************************************************************************************************** */
+
+UPDATE Clientes4 SET Nombre='Susana' WHERE Nombre='Rafael';
+SELECT * FROM Clientes4;
+
+/* ************************************************************************************ 
+    ACTUALIZANDO DATOS: Actualizaremos de la tabla Clientes4 los Dni de todos los Nombres que se llamen
+    Susana. NO SE PERMITIRÁ porque el Dni tiene la RESTRICCIÓN DE CLAVE PRIMARIA sin duplicados.
+   ********************************************************************************* */
+
+UPDATE Clientes4 SET Dni='12365423H' WHERE Nombre='Susana';
+SELECT * FROM Clientes4;
+
+DROP TABLE Pedidos4;
+DROP TABLE Clientes4;
+DROP TABLE Posibles_Clientes4;
